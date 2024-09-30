@@ -2,7 +2,7 @@ from flask import Flask,request,jsonify
 import pymysql
 import redis
 import random
-import string
+import string,time,math,hashlib
 import requests
 app = Flask(__name__)
 global db,rd
@@ -29,8 +29,8 @@ def getEmailCaptcha():
     global db,rd
     cursor = db.cursor()
     db.ping(reconnect=True) 
-    emailCount=cursor.execute("SELECT * FROM users WHERE email=%s",email)
-    if(emailCount!=0):return jsonify({"code":1,"msg":"邮箱已被注册"})
+    #emailCount=cursor.execute("SELECT * FROM users WHERE email=%s",email)
+    #if(emailCount!=0):return jsonify({"code":1,"msg":"邮箱已被注册"})
     if(rd.exists(email+"EmailCaptchaTime")):return jsonify({"code":2,"msg":"请求过于频繁"})
     captcha=generate_random_string(6)
     r,t=send_email([email],"TimeStamp Sign In Captcha",captcha)
@@ -39,6 +39,20 @@ def getEmailCaptcha():
         rd.setex(email+"EmailCaptchaTime",60,0)
         return jsonify({"code":0,"msg":"成功"})
     else:return jsonify({"code":3,"msg":"发送邮件失败"})
-
+@app.route("/api/login",methods=["post"])
+def login():
+    username=request.json.get("username")
+    password=request.json.get("password")
+    t=int(request.json.get("t"))
+    global db,rd
+    if(abs(time.time()-t)==10):return jsonify({"code":1,"msg":"请求超时"})
+    db.ping(reconnect=True) 
+    cursor = db.cursor()
+    if("@" in username):userCount=cursor.execute("SELECT * FROM users WHERE email=%s",username)
+    else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
+    if(userCount==0):return jsonify({"code":2,"msg":"未找到用户"})
+    if(userCount>1):return jsonify({"code":3,"msg":"用户数量错误"})
+    if(hashlib.sha3_256((str(cursor.fetchone()[2])+str(t)).encode()).hexdigest()!=password):return jsonify({"code":4,"msg":"密码错误"})
+    return str(cursor.fetchone()[2])
 if __name__ == "__main__":
     app.run()
