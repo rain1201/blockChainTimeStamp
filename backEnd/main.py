@@ -4,9 +4,11 @@ import redis
 import random
 import string,time,math,hashlib,uuid
 import requests
+from web3 import Web3,HTTPProvider 
 app = Flask(__name__)
-global db,rd
+global db,rd,w3
 db = pymysql.connect(host='mysql.sqlpub.com',database="ccbcts", user='sqladmin', passwd='ALPSHkGRSeMQgk9r', port=3306)
+w3 = Web3(Web3.HTTPProvider(' https://rpc.sepolia.org'))
 pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
 rd = redis.Redis(connection_pool=pool)
 def generate_random_string(length:int):
