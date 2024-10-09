@@ -122,5 +122,30 @@ def resetPassword():
     cnt=cursor.execute('UPDATE users SET password=%s WHERE email=%s;',[password,email])
     if(cnt==1):return jsonify({"code":0,"msg":"成功"})
     else:return jsonify({"code":4,"msg":"修改密码失败"})
+@app.route("/api/loginWithMeta",methods=["post"])
+def loginWithMeta():
+    address=request.json.get("address")
+    sign=request.json.get("sign")
+    t=request.json.get("t")
+    if(None in [address,sign,t]):return jsonify({"code":1,"msg":"参数过少"})
+    t=int(t)
+    if(abs(t=time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
+    global db,rd,w3
+    db.ping(reconnect=True) 
+    cursor = db.cursor()
+    userCount=0
+    userCount=cursor.execute("SELECT * FROM users WHERE address=%s",address)
+    #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
+    if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
+    if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
+    if(not w3.eth.account.verify_message("Trying to login timestamp service, time is "+str(t),address)):return jsonify({"code":5,"msg":"密码错误"})
+    userInf=cursor.fetchone()
+    while(1):
+        newSessionId=uuid.uuid4().hex
+        if(not rd.exists(str(newSessionId)+"sessionId")):
+            rd.setex(str(newSessionId)+"sessionId",userInf[0],86400)
+            rd.sadd(str(userInf[0])+"sessionList",newSessionId)
+            break
+    return jsonify({"code":0,"msg":"成功",userId:userInf[0],sessionId:newSessionId})
 if __name__ == "__main__":
     app.run()
