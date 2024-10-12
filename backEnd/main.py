@@ -146,6 +146,25 @@ def loginWithMeta():
             rd.setex(str(newSessionId)+"sessionId",userInf[0],86400)
             rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
-    return jsonify({"code":0,"msg":"成功",userId:userInf[0],sessionId:newSessionId})
+    return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId})
+@app.route("/api/generateRecordID",methods=["post"])
+def generateRecordID():
+    userId=request.json.get("userId")
+    sessionId=request.json.get("sessionId")
+    if(None in [userId,sessionId]):return jsonify({"code":1,"msg":"参数过少"})
+    global rd
+    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
+        return jsonify({"code":2,"msg":"会话过期"})
+    if(sessionId=="anonymous"):userId=0
+    while(1):
+        newRecordId=uuid.uuid4().hex
+        if(not rd.exists(str(newRecordId)+"RecordId")):
+            rd.setex(str(newRecordId)+"RecordId",userId,600)
+            break
+    return jsonify({"code":0,"msg":"成功","recordId":newRecordId})
+@app.route("/api/uploadRecord",methods=["post"])
+def generateRecordID():
+    recordId=request.json.get("recordId")
+    
 if __name__ == "__main__":
     app.run()
