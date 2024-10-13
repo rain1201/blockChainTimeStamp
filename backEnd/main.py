@@ -53,18 +53,19 @@ def login():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    if("@" in username):userCount=cursor.execute("SELECT * FROM users WHERE email=%s",username)
+    if("@" in username):userCount=cursor.execute("SELECT id FROM users WHERE email=%s;",username)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
-    if(hashlib.sha3_256((str(cursor.fetchone()[2])+str(t)).encode()).hexdigest()!=password):return jsonify({"code":5,"msg":"密码错误"})
     userInf=cursor.fetchone()
+    if(hashlib.sha3_256((str(userInf[2])+str(t)).encode()).hexdigest()!=password):return jsonify({"code":5,"msg":"密码错误"})
     while(1):
         newSessionId=uuid.uuid4().hex
         if(not rd.exists(str(newSessionId)+"sessionId")):
             rd.setex(str(newSessionId)+"sessionId",userInf[0],86400)
             rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
+    cursor.close()
     return jsonify({"code":0,"msg":"成功",userId:userInf[0],sessionId:newSessionId})
 @app.route("/api/logoutAll",methods=["post"])
 def logoutAll():
@@ -101,7 +102,7 @@ def signup():
     global db,rd
     cursor=db.cursor()
     db.ping(reconnect=True)
-    emailCount=cursor.execute("SELECT * FROM users WHERE email=%s",email)
+    emailCount=cursor.execute("SELECT id FROM users WHERE email=%s",email)
     if(emailCount!=0):return jsonify({"code":2,"msg":"邮箱已被注册"})
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
     cnt=cursor.execute('INSERT INTO users (email, password, username) VALUES ("%s", "%s", "%s");',[email,password,username])
@@ -116,7 +117,7 @@ def resetPassword():
     global db,rd
     cursor=db.cursor()
     db.ping(reconnect=True)
-    emailCount=cursor.execute("SELECT * FROM users WHERE email=%s",email)
+    emailCount=cursor.execute("SELECT id FROM users WHERE email=%s",email)
     if(emailCount==0):return jsonify({"code":2,"msg":"邮箱不存在"})    
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
     cnt=cursor.execute('UPDATE users SET password=%s WHERE email=%s;',[password,email])
@@ -134,11 +135,12 @@ def loginWithMeta():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    userCount=cursor.execute("SELECT * FROM users WHERE address=%s",address)
+    userCount=cursor.execute("SELECT * FROM users WHERE ethAddress=%s;",address)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
-    if(not w3.eth.account.verify_message("Trying to login timestamp service, time is "+str(t),address)):return jsonify({"code":5,"msg":"密码错误"})
+    if(not w3.eth.account.verify_message("Trying to login timestamp service, time is "+str(t),address)):
+        return jsonify({"code":5,"msg":"密码错误"})
     userInf=cursor.fetchone()
     while(1):
         newSessionId=uuid.uuid4().hex
@@ -152,19 +154,39 @@ def generateRecordID():
     userId=request.json.get("userId")
     sessionId=request.json.get("sessionId")
     if(None in [userId,sessionId]):return jsonify({"code":1,"msg":"参数过少"})
-    global rd
+    global rd,db
+    db.ping(reconnect=True) 
+    cursor = db.cursor()    
     if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
         return jsonify({"code":2,"msg":"会话过期"})
     if(sessionId=="anonymous"):userId=0
     while(1):
         newRecordId=uuid.uuid4().hex
-        if(not rd.exists(str(newRecordId)+"RecordId")):
+        if(not rd.exists(str(newRecordId)+"RecordId") and cursor.execute("SELECT id FROM records WHERE recordId=%s;",[newRecordId])==0):
             rd.setex(str(newRecordId)+"RecordId",userId,600)
             break
+    cursor.close()
     return jsonify({"code":0,"msg":"成功","recordId":newRecordId})
 @app.route("/api/uploadRecord",methods=["post"])
-def generateRecordID():
+def uploadRecord():
     recordId=request.json.get("recordId")
-    
+    userId=request.json.get("userId")
+    sessionId=request.json.get("sessionId")
+    fileHash=request.json.get("fileHash")
+    selfSign=request.json.get("selfSign")
+    transactionId=request.json.get("transactionId")
+    if(None in [userId,sessionId,recordId,selfSign,sessionId,fileHash,transactionId]):return jsonify({"code":1,"msg":"参数过少"})
+    global rd,db
+    db.ping(reconnect=True) 
+    cursor = db.cursor()    
+    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
+        return jsonify({"code":2,"msg":"会话过期"})
+    if(not rd.exists(str(recordId)+"RecordId") or rd.get(str(recordId)+"RecordId")!=userId):
+        return jsonify({"code":3,"msg":"会话过期"})
+    cnt=0
+    cnt=cursor.execute('INSERT INTO records (recordId, fileHash, selfSign, transactionId, status, userId) VALUES ("%s", "%s", "%s", "%s", 1, %s);',
+                   [recordId, fileHash, selfSign, transactionId,userId])
+    return jsonify({"code":cnt-1,"msg":"完成"})
+
 if __name__ == "__main__":
     app.run()
