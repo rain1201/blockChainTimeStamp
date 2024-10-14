@@ -167,6 +167,31 @@ def generateRecordID():
             break
     cursor.close()
     return jsonify({"code":0,"msg":"成功","recordId":newRecordId})
+@app.route("/api/setEthAddress",method=["post"])
+def setEthAddress():
+    userId=request.json.get("userId")
+    sessionId=request.json.get("sessionId")    
+    address=request.json.get("address")
+    sign=request.json.get("sign")
+    t=request.json.get("t")
+    if(None in [address,sign,t,userId,sessionId]):return jsonify({"code":1,"msg":"参数过少"})
+    t=int(t)
+    if(abs(t=time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
+    global db,rd,w3
+    if((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId):
+        return jsonify({"code":3,"msg":"会话过期"})
+    db.ping(reconnect=True) 
+    cursor = db.cursor()  
+    cnt=0
+    cnt=cursor.execute("SELECT ethAddress FROM users WHERE ethAddress=%s;",[address])
+    if(cnt!=0):return jsonify({"code":4,"msg":"地址已被绑定"})
+    cnt=cursor.execute("SELECT ethAddress,email FROM users WHERE id=%s;",[userId])
+    inf=cursor.fetchone()
+    if(inf[0]!=None):return jsonify({"code":5,"msg":"已绑定"})
+    if(not w3.eth.account.verify_message("Trying to sign in timestamp service with %s, time is %s"%(inf[1],str(t)),address)):
+        return jsonify({"code":6,"msg":"签名错误"})
+    cnt=cursor.execute('UPDATE users SET ethAddress=%s WHERE id=%s;',[address,userId])
+    return jsonify({"code":0,"msg":"成功"})    
 @app.route("/api/uploadRecord",methods=["post"])
 def uploadRecord():
     recordId=request.json.get("recordId")
@@ -187,6 +212,5 @@ def uploadRecord():
     cnt=cursor.execute('INSERT INTO records (recordId, fileHash, selfSign, transactionId, status, userId) VALUES ("%s", "%s", "%s", "%s", 1, %s);',
                    [recordId, fileHash, selfSign, transactionId,userId])
     return jsonify({"code":cnt-1,"msg":"完成"})
-
 if __name__ == "__main__":
     app.run()
