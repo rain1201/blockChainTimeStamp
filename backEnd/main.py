@@ -6,9 +6,12 @@ import string,time,math,hashlib,uuid
 import requests
 from web3 import Web3,HTTPProvider 
 app = Flask(__name__)
-global db,rd,w3
+abi='[{"inputs": [{"internalType": "uint256","name": "fileHash","type": "uint256"},{"internalType": "uint128","name": "recordID","type": "uint128"},{"internalType": "string","name": "selfSign","type": "string"}],"name": "addRecord","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "payable","type": "function"},{"inputs": [{"internalType": "uint256","name": "recordPrice","type": "uint256"}],"name": "setPrice","outputs": [{"internalType": "bool","name": "","type": "bool"}],"stateMutability": "nonpayable","type": "function"},{"inputs": [],"stateMutability": "nonpayable","type": "constructor"},{"inputs": [{"internalType": "uint256","name": "value","type": "uint256"}],"name": "withdraw","outputs": [{"internalType": "bool","name": "","type": "bool"}],"stateMutability": "nonpayable","type": "function"},{"inputs": [],"name": "creator","outputs": [{"internalType": "address","name": "","type": "address"}],"stateMutability": "view","type": "function"},{"inputs": [],"name": "price","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "view","type": "function"},{"inputs": [{"internalType": "uint256","name": "","type": "uint256"}],"name": "records","outputs": [{"internalType": "uint256","name": "fileHash","type": "uint256"},{"internalType": "uint128","name": "recordID","type": "uint128"},{"internalType": "string","name": "sign","type": "string"}],"stateMutability": "view","type": "function"}]'
+contract="0x618399f465602b385ab77adb4b772bdcca8bf601"
+global db,rd,w3,ct
 db = pymysql.connect(host='mysql.sqlpub.com',database="ccbcts", user='sqladmin', passwd='ALPSHkGRSeMQgk9r', port=3306)
 w3 = Web3(Web3.HTTPProvider(' https://rpc.sepolia.org'))
+ct=w3.eth.contract(address=w3.to_checksum_address(contract),abi=abi)
 pool = redis.ConnectionPool(host='localhost', port=6379, decode_responses=True)
 rd = redis.Redis(connection_pool=pool)
 def generate_random_string(length:int):
@@ -176,6 +179,7 @@ def setEthAddress():
     address=request.json.get("address")
     sign=request.json.get("sign")
     t=request.json.get("t")
+    if(sessionId=="anonymous"):userId=0
     if(None in [address,sign,t,userId,sessionId]):return jsonify({"code":1,"msg":"参数过少"})
     t=int(t)
     if(abs(t=time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
@@ -213,6 +217,7 @@ def uploadRecord():
     cnt=0
     cnt=cursor.execute('INSERT INTO records (recordId, fileHash, selfSign, transactionId, status, userId) VALUES ("%s", "%s", "%s", "%s", 1, %s);',
                    [recordId, fileHash, selfSign, transactionId,userId])
+    rd.delete(str(recordId)+"RecordId")
     return jsonify({"code":cnt-1,"msg":"完成"})
 @app.route("/api/queryRecords",methods=["post"])
 def queryRecords():
@@ -250,5 +255,42 @@ def querySingleRecords():
     ret={"code":0,"count":cnt,"data":[]}
     for _ in range(cnt):ret["data"].append(cursor.fetchone())
     return jsonify(ret)
+@app.route("/api/updateRecord",methods=["post"])
+def updateRecord():
+    recordId=request.json.get("recordId")
+    if(recordId==None):return jsonify({"code":1,"msg":"参数错误"})
+    global rd,db,w3,ct
+    if(rd.exists(str(recordId)+"RecordId")):return jsonify({"code":2,"msg":"等待客户返回信息"})
+    db.ping(reconnect=True) 
+    cursor = db.cursor() 
+    cnt=0
+    cnt=cursor.execute('SELECT status,transactionId FROM records WHERE recordId="%s";',[recordId])
+    if(cnt==0):return jsonify({"code":3,"msg":"记录不存在"})
+    inf=cursor.fetchone()
+    if(inf[0]==1):
+        try:
+            transaction=w3.eth.get_transaction(inf[1])
+            transaction.input.hex()
+        except:return jsonify({"code":4,"msg":"交易尚未完成"})
+        try:blockInf=ct.decode_function_input(transaction.input)
+        except:
+            cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
+            return jsonify({"code":5,"msg":"无法解析交易数据"})
+        blockInf=blockInf[1]
+        cursor.execute('SELECT fileHash,selfSign,userId FROM records WHERE recordId="%s";',[recordId]);
+        databaseInf=cursor.fetchone();
+        if(databaseInf[0].lower()!=hex(i["fileHash"]).removeprefix("0x") or databaseInf[1]!=hex(i["selfSign"])):
+            cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
+            return jsonify({"code":6,"msg":"区块数据不同步"})
+        cursor.execute('SELECT ethAddress FROM users WHERE userId=%s;',[databaseInf[2]])
+        if(cursor.fetchone()[0]!=transaction.get("from")):
+            cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
+            return jsonify({"code":6,"msg":"区块数据不同步"})
+        cursor.execute('UPDATE records SET status=3 WHERE recordId="%s";',[recordId]);
+        return jsonify({"code":0,"msg":"记录已更新"})
+    elif(inf[0]==2):return jsonify({"code":1,"msg":"区块数据不同步"})
+    elif(inf[0]==3):return jsonify({"code":0,"msg":"记录已更新"})
+    elif(inf[0]==4):return jsonify({"code":3,"msg":"记录不存在"})
+    else:return jsonify({"code":1,"msg":"数据错误"})
 if __name__ == "__main__":
     app.run()
