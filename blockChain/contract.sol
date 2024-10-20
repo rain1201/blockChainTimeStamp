@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 contract blockChain {  
     address public creator;  
-    uint public price=100;  
+    uint public price=0;  
     Record[] public records;  
   
     struct Record {  

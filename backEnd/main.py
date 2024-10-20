@@ -63,10 +63,11 @@ def login():
         newSessionId=uuid.uuid4().hex
         if(not rd.exists(str(newSessionId)+"sessionId")):
             rd.setex(str(newSessionId)+"sessionId",userInf[0],86400)
-            rd.sadd(str(userInf[0])+"sessionList",newSessionId)
+            #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
     cursor.close()
     return jsonify({"code":0,"msg":"成功",userId:userInf[0],sessionId:newSessionId})
+"""
 @app.route("/api/logoutAll",methods=["post"])
 def logoutAll():
     userId=request.json.get("userId")
@@ -80,6 +81,7 @@ def logoutAll():
         toRemoveId=rd.spop(userId+"sessionList")
         rd.delete(toRemoveId+"sessionId")
     return jsonify({"code":0,"msg":"成功"})
+"""
 @app.route("/api/logout",methods=["post"])
 def logout():
     userId=request.json.get("userId")
@@ -90,7 +92,7 @@ def logout():
     if(not rd.exists(sessionId+"sessionId") or str(rd.get(sessionId+"sessionId"))!=userId):
         return jsonify({"code":2,"msg":"会话id无效"})
     rd.delete(sessionId+"sessionId")
-    rd.srem(userId+"sessionList",sessionId)
+    #rd.srem(userId+"sessionList",sessionId)
     return jsonify({"code":0,"msg":"成功"})
 @app.route("/api/signup",methods=["post"])
 def signup():
@@ -135,18 +137,18 @@ def loginWithMeta():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    userCount=cursor.execute("SELECT * FROM users WHERE ethAddress=%s;",address)
+    userCount=cursor.execute("SELECT userId FROM users WHERE ethAddress=%s;",address)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
-    if(not w3.eth.account.verify_message("Trying to login timestamp service, time is "+str(t),address)):
+    if(w3.eth.account.verify_message("Trying to login timestamp service, time is "+str(t),sign)!=address):
         return jsonify({"code":5,"msg":"密码错误"})
     userInf=cursor.fetchone()
     while(1):
         newSessionId=uuid.uuid4().hex
         if(not rd.exists(str(newSessionId)+"sessionId")):
             rd.setex(str(newSessionId)+"sessionId",userInf[0],86400)
-            rd.sadd(str(userInf[0])+"sessionList",newSessionId)
+            #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
     return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId})
 @app.route("/api/generateRecordID",methods=["post"])
@@ -188,7 +190,7 @@ def setEthAddress():
     cnt=cursor.execute("SELECT ethAddress,email FROM users WHERE id=%s;",[userId])
     inf=cursor.fetchone()
     if(inf[0]!=None):return jsonify({"code":5,"msg":"已绑定"})
-    if(not w3.eth.account.verify_message("Trying to sign in timestamp service with %s, time is %s"%(inf[1],str(t)),address)):
+    if(w3.eth.account.verify_message("Trying to sign in timestamp service with %s, time is %s"%(inf[1],str(t)),sign)!=address):
         return jsonify({"code":6,"msg":"签名错误"})
     cnt=cursor.execute('UPDATE users SET ethAddress=%s WHERE id=%s;',[address,userId])
     return jsonify({"code":0,"msg":"成功"})    
