@@ -164,7 +164,9 @@ def generateRecordID():
     cursor = db.cursor()    
     if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
         return jsonify({"code":2,"msg":"会话过期"})
-    if(sessionId=="anonymous"):userId=0
+    if(sessionId=="anonymous"):userId="0"
+    cnt=cursor.execute('SELECT ethAddress FROM users WHERE id=%s;',[userId])
+    if(cursor.fetchone()[0]==""):return jsonify({"code":3,"msg":"未绑定"})
     while(1):
         newRecordId=uuid.uuid4().hex
         if(not rd.exists(str(newRecordId)+"RecordId") and cursor.execute("SELECT id FROM records WHERE recordId=%s;",[newRecordId])==0):
@@ -179,7 +181,6 @@ def setEthAddress():
     address=request.json.get("address")
     sign=request.json.get("sign")
     t=request.json.get("t")
-    if(sessionId=="anonymous"):userId=0
     if(None in [address,sign,t,userId,sessionId]):return jsonify({"code":1,"msg":"参数过少"})
     t=int(t)
     if(abs(t=time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
@@ -219,20 +220,18 @@ def uploadRecord():
                    [recordId, fileHash, selfSign, transactionId,userId])
     rd.delete(str(recordId)+"RecordId")
     return jsonify({"code":cnt-1,"msg":"完成"})
-@app.route("/api/queryRecords",methods=["post"])
-def queryRecords():
+@app.route("/api/queryUserRecords",methods=["post"])
+def queryUserRecords():
     userId=request.json.get("userId")
     sessionId=request.json.get("sessionId") 
-    count=request.json.get("count")
-    begin=request.json.get("begin")
-    if(None in [userId,sessionId,count,begin] or count>100):return jsonify({"code":1,"msg":"参数错误"})
+    if(None in [userId,sessionId]):return jsonify({"code":1,"msg":"参数错误"})
     global rd,db
     if(((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
         return jsonify({"code":2,"msg":"会话过期"})
     db.ping(reconnect=True) 
     cursor = db.cursor() 
     cnt=0
-    cnt=cursor.execute('SELECT id,fileHash FROM records WHERE userId=%s AND id>%s LIMIT %s;',[userId,begin,count])
+    cnt=cursor.execute('SELECT recordId,fileHash FROM records WHERE userId=%s;',[userId])
     ret={"code":0,"count":cnt,"data":[]}
     for _ in range(cnt):ret["data"].append(cursor.fetchone())
     return jsonify(ret)
@@ -283,7 +282,7 @@ def updateRecord():
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
             return jsonify({"code":6,"msg":"区块数据不同步"})
         cursor.execute('SELECT ethAddress FROM users WHERE userId=%s;',[databaseInf[2]])
-        if(cursor.fetchone()[0]!=transaction.get("from")):
+        if(cursor.fetchone()[0]!=transaction.get("from") and databaseInf[2]!=0):
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
             return jsonify({"code":6,"msg":"区块数据不同步"})
         cursor.execute('UPDATE records SET status=3 WHERE recordId="%s";',[recordId]);
