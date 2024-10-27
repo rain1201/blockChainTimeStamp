@@ -69,7 +69,7 @@ def login():
             #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
     cursor.close()
-    return jsonify({"code":0,"msg":"成功",userId:userInf[0],sessionId:newSessionId})
+    return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId})
 """
 @app.route("/api/logoutAll",methods=["post"])
 def logoutAll():
@@ -174,7 +174,7 @@ def generateRecordID():
             break
     cursor.close()
     return jsonify({"code":0,"msg":"成功","recordId":newRecordId})
-@app.route("/api/setEthAddress",method=["post"])
+@app.route("/api/setEthAddress",methods=["post"])
 def setEthAddress():
     userId=request.json.get("userId")
     sessionId=request.json.get("sessionId")    
@@ -240,7 +240,8 @@ def querySingleRecords():
     userId=request.json.get("userId")
     sessionId=request.json.get("sessionId") 
     recordId=request.json.get("recordId")
-    if(None in [userId,sessionId,count,begin] or count>100):return jsonify({"code":1,"msg":"参数错误"})
+
+    if(None in [userId,sessionId,recordId]):return jsonify({"code":1,"msg":"参数错误"})
     global rd,db
     if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
         return jsonify({"code":2,"msg":"会话过期"})
@@ -278,7 +279,7 @@ def updateRecord():
         blockInf=blockInf[1]
         cursor.execute('SELECT fileHash,selfSign,userId FROM records WHERE recordId="%s";',[recordId]);
         databaseInf=cursor.fetchone();
-        if(databaseInf[0].lower()!=hex(i["fileHash"]).removeprefix("0x") or databaseInf[1]!=hex(i["selfSign"])):
+        if(databaseInf[0].lower()!=hex(blockInf["fileHash"]).removeprefix("0x") or databaseInf[1]!=hex(blockInf["selfSign"])):
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
             return jsonify({"code":6,"msg":"区块数据不同步"})
         cursor.execute('SELECT ethAddress FROM users WHERE userId=%s;',[databaseInf[2]])
