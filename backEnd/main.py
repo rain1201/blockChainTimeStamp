@@ -56,7 +56,7 @@ def login():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    if("@" in username):userCount=cursor.execute("SELECT id FROM users WHERE email=%s;",username)
+    if("@" in username): userCount=cursor.execute('SELECT id FROM users WHERE email="%s";',username)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
@@ -111,6 +111,7 @@ def signup():
     if(emailCount!=0):return jsonify({"code":2,"msg":"邮箱已被注册"})
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
     cnt=cursor.execute('INSERT INTO users (email, password, username) VALUES ("%s", "%s", "%s");',[email,password,username])
+    db.commit()
     if(cnt==1):return jsonify({"code":0,"msg":"成功"})
     else:return jsonify({"code":4,"msg":"创建用户失败"})
 @app.route("/api/resetPassword",methods=["post"])
@@ -126,6 +127,7 @@ def resetPassword():
     if(emailCount==0):return jsonify({"code":2,"msg":"邮箱不存在"})    
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
     cnt=cursor.execute('UPDATE users SET password=%s WHERE email=%s;',[password,email])
+    db.commit()
     if(cnt==1):return jsonify({"code":0,"msg":"成功"})
     else:return jsonify({"code":4,"msg":"修改密码失败"})
 @app.route("/api/loginWithMeta",methods=["post"])
@@ -198,7 +200,8 @@ def setEthAddress():
     if(w3.eth.account.verify_message("Trying to sign in timestamp service with %s, time is %s"%(inf[1],str(t)),sign)!=address):
         return jsonify({"code":6,"msg":"签名错误"})
     cnt=cursor.execute('UPDATE users SET ethAddress=%s WHERE id=%s;',[address,userId])
-    return jsonify({"code":0,"msg":"成功"})    
+    db.commit()
+    return jsonify({"code":0,"msg":"成功"})
 @app.route("/api/uploadRecord",methods=["post"])
 def uploadRecord():
     recordId=request.json.get("recordId")
@@ -218,6 +221,7 @@ def uploadRecord():
     cnt=0
     cnt=cursor.execute('INSERT INTO records (recordId, fileHash, selfSign, transactionId, status, userId) VALUES ("%s", "%s", "%s", "%s", 1, %s);',
                    [recordId, fileHash, selfSign, transactionId,userId])
+    db.commit()
     rd.delete(str(recordId)+"RecordId")
     return jsonify({"code":cnt-1,"msg":"完成"})
 @app.route("/api/queryUserRecords",methods=["post"])
@@ -275,18 +279,22 @@ def updateRecord():
         try:blockInf=ct.decode_function_input(transaction.input)
         except:
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
+            db.commit()
             return jsonify({"code":5,"msg":"无法解析交易数据"})
         blockInf=blockInf[1]
         cursor.execute('SELECT fileHash,selfSign,userId FROM records WHERE recordId="%s";',[recordId]);
         databaseInf=cursor.fetchone();
         if(databaseInf[0].lower()!=hex(blockInf["fileHash"]).removeprefix("0x") or databaseInf[1]!=hex(blockInf["selfSign"])):
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
+            db.commit()
             return jsonify({"code":6,"msg":"区块数据不同步"})
         cursor.execute('SELECT ethAddress FROM users WHERE userId=%s;',[databaseInf[2]])
         if(cursor.fetchone()[0]!=transaction.get("from") and databaseInf[2]!=0):
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
+            db.commit()
             return jsonify({"code":6,"msg":"区块数据不同步"})
         cursor.execute('UPDATE records SET status=3 WHERE recordId="%s";',[recordId]);
+        db.commit()
         return jsonify({"code":0,"msg":"记录已更新"})
     elif(inf[0]==2):return jsonify({"code":1,"msg":"区块数据不同步"})
     elif(inf[0]==3):return jsonify({"code":0,"msg":"记录已更新"})
