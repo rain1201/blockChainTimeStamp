@@ -1,0 +1,246 @@
+.ml-25 {
+  margin-left: 1.56rem;
+}
+.ml-134 {
+  margin-left: 8.38rem;
+}
+.mt-17 {
+  margin-top: 1.06rem;
+}
+.ml-7 {
+  margin-left: 0.44rem;
+}
+.page {
+  background-image: url(https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/6714a1a1d54496f19f2ffade/67168b393334110012744a46/17299645284511233721.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
+.image {
+  mix-blend-mode: SCREEN;
+  width: 58rem;
+  height: 77rem;
+}
+.section {
+  padding: 0 1.56rem;
+  background-color: #ffffff69;
+  overflow: hidden;
+  height: 6rem;
+}
+.pos {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.section_5 {
+  padding-top: 0.25rem;
+  background-image: linear-gradient(90deg, #ecd0b2 0%, #f4ebdd 100%);
+  border-radius: 0.63rem;
+  width: 26rem;
+  height: 5.06rem;
+}
+.image_2 {
+  width: 3.63rem;
+  height: 3.31rem;
+}
+.text {
+  color: #000000;
+  font-size: 2rem;
+  font-family: Stoke;
+  line-height: 2.19rem;
+}
+.text_5 {
+  color: #000000;
+  font-size: 1.5rem;
+  font-family: Stoke;
+  line-height: 1.65rem;
+}
+.group {
+  margin-right: 2.88rem;
+}
+.section_3 {
+  padding-bottom: 0.75rem;
+  background-color: #ffffff00;
+  width: 10.06rem;
+  height: 6.25rem;
+}
+.section_2 {
+  margin-left: -1.63rem;
+  padding: 1.75rem 0.63rem 1.38rem 0.75rem;
+  background-color: #d9d9d9c9;
+  border-radius: 0.31rem;
+}
+.image_3 {
+  width: 2.38rem;
+  height: 2.38rem;
+}
+.font {
+  font-size: 2rem;
+  font-family: Inter;
+  line-height: 1.85rem;
+  color: #000000;
+}
+.text_2 {
+  line-height: 1.85rem;
+}
+.section_4 {
+  padding: 1.75rem 0 1.38rem;
+  background-color: #d9d9d900;
+}
+.text_3 {
+  line-height: 1.84rem;
+}
+.image_4 {
+  margin-left: 3.56rem;
+  width: 1.88rem;
+  height: 2.06rem;
+}
+.image_5 {
+  margin-left: 4.06rem;
+  width: 2.13rem;
+  height: 2.13rem;
+}
+.text_4 {
+  margin-left: 4.13rem;
+  color: #000000;
+  font-size: 1.5rem;
+  font-family: Inter;
+  line-height: 1.39rem;
+}
+.section_8 {
+  margin-top: 8.75rem;
+  background-color: #00000000;
+  width: 90.94rem;
+  height: 8.56rem;
+}
+.section_6 {
+  padding-top: 0.69rem;
+  background-color: #ffffff69;
+  overflow: hidden;
+  width: 29.06rem;
+}
+.pos_2 {
+  position: absolute;
+  left: 0;
+  top: 6.25rem;
+}
+.section_7 {
+  margin-left: 1.5rem;
+  margin-right: 1.81rem;
+  padding: 0.75rem 0.5rem;
+  background-color: #ffffff;
+  border-radius: 0.63rem;
+}
+.image_7 {
+  border-radius: 6.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.image_6 {
+  margin-right: 0.5rem;
+  box-shadow: 0rem 0.063rem 0.19rem #0000004d, 0rem 0.25rem 0.5rem 0.19rem #00000026;
+  border-radius: 1rem;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+.group_2 {
+  padding: 2.94rem 0 1.31rem;
+}
+.grid {
+  padding: 0.94rem;
+  background-color: #ffffff;
+  overflow: hidden;
+  height: 74.69rem;
+  display: grid;
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: 1.38rem;
+  column-gap: 1.31rem;
+}
+.grid-item {
+  width: 8.25rem;
+  height: 13.56rem;
+}
+.section_9 {
+  background-color: #ffffffe0;
+}
+.image_8 {
+  margin: 0.19rem 0;
+  border-radius: 0.5rem;
+  width: 3rem;
+  height: 2rem;
+}
+.text-wrapper_2 {
+  margin: 0.19rem 0;
+  padding: 0.63rem 0;
+  border-radius: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+}
+.font_2 {
+  font-size: 1rem;
+  font-family: Inter;
+  line-height: 0.75rem;
+  color: #1e1e1e;
+}
+.text_6 {
+  line-height: 0.73rem;
+}
+.text-wrapper_3 {
+  margin: 0.19rem 0;
+  padding: 0.63rem 0;
+  border-radius: 0.5rem;
+  width: 2.13rem;
+  height: 2rem;
+}
+.text_7 {
+  line-height: 0.74rem;
+}
+.text-wrapper_4 {
+  margin: 0.19rem 0;
+  padding: 0.63rem 0;
+  background-color: #2c2c2c;
+  border-radius: 0.5rem;
+  width: 2.19rem;
+  height: 2rem;
+}
+.text_8 {
+  color: #f5f5f5;
+}
+.text-wrapper {
+  padding: 1.38rem 0 0.75rem;
+  border-radius: 0.5rem;
+  width: 2.94rem;
+  height: 2.38rem;
+}
+.text_10 {
+  color: #000000;
+  font-size: 1rem;
+  font-family: Inter;
+  font-weight: 700;
+  line-height: 0.17rem;
+}
+.text-wrapper_5 {
+  margin: 0.19rem 0;
+  padding: 0.63rem 0;
+  border-radius: 0.5rem;
+  width: 2.63rem;
+  height: 2rem;
+}
+.group_3 {
+  margin: 0.19rem 3.31rem 0.19rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  height: 2rem;
+}
+.text_9 {
+  line-height: 0.74rem;
+}
+.image_9 {
+  width: 1rem;
+  height: 1rem;
+}
