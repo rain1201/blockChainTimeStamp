@@ -123,10 +123,10 @@ def resetPassword():
     global db,rd
     cursor=db.cursor()
     db.ping(reconnect=True)
-    emailCount=cursor.execute("SELECT id FROM users WHERE email=%s",email)
+    emailCount=cursor.execute('SELECT id FROM users WHERE email="%s"',email)
     if(emailCount==0):return jsonify({"code":2,"msg":"邮箱不存在"})    
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
-    cnt=cursor.execute('UPDATE users SET password=%s WHERE email=%s;',[password,email])
+    cnt=cursor.execute('UPDATE users SET password="%s" WHERE email="%s";',[password,email])
     db.commit()
     if(cnt==1):return jsonify({"code":0,"msg":"成功"})
     else:return jsonify({"code":4,"msg":"修改密码失败"})
