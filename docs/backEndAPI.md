@@ -112,7 +112,7 @@
  + `sessionId`: 会话ID
  + `fileHash`: 文件哈希
  + `selfSign`: 自签名
- + `transactionId`: 交易ID
+ + `txId`: 交易ID
 * **返回值**:
  + `code`: 状态码（0：成功，1：参数过少，2：会话过期，3：记录过期）
  + `msg`: 状态信息
