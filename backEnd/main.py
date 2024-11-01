@@ -56,12 +56,12 @@ def login():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    if("@" in username): userCount=cursor.execute('SELECT password FROM users WHERE email="%s";',username)
+    if("@" in username): userCount=cursor.execute('SELECT id,password FROM users WHERE email="%s";',username)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
     userInf=cursor.fetchone()
-    if(hashlib.sha3_256((str(userInf[0])+str(t)).encode()).hexdigest()!=password):return jsonify({"code":5,"msg":"密码错误"})
+    if(hashlib.sha3_256((str(userInf[1])+str(t)).encode()).hexdigest()!=password):return jsonify({"code":5,"msg":"密码错误"})
     while(1):
         newSessionId=uuid.uuid4().hex
         if(not rd.exists(str(newSessionId)+"sessionId")):
