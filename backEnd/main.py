@@ -61,11 +61,11 @@ def login():
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
     userInf=cursor.fetchone()
-    if(hashlib.sha3_256((str(userInf[1])+str(t)).encode()).hexdigest()!=password):return jsonify({"code":5,"msg":"密码错误"})
+    if(hashlib.sha3_256((userInf[1].removeprefix("'").removesuffix("'")+str(t)).encode()).hexdigest()!=password):return jsonify({"code":5,"msg":"密码错误"})
     while(1):
         newSessionId=uuid.uuid4().hex
         if(not rd.exists(str(newSessionId)+"sessionId")):
-            rd.setex(str(newSessionId)+"sessionId",userInf[0],86400)
+            rd.setex(str(newSessionId)+"sessionId",86400,userInf[0])
             #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
     cursor.close()
@@ -163,8 +163,8 @@ def generateRecordID():
     if(None in [userId,sessionId]):return jsonify({"code":1,"msg":"参数过少"})
     global rd,db
     db.ping(reconnect=True) 
-    cursor = db.cursor()    
-    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
+    cursor = db.cursor()
+    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=str(userId))):
         return jsonify({"code":2,"msg":"会话过期"})
     if(sessionId=="anonymous"):userId="0"
     cnt=cursor.execute('SELECT ethAddress FROM users WHERE id=%s;',[userId])
@@ -172,7 +172,7 @@ def generateRecordID():
     while(1):
         newRecordId=uuid.uuid4().hex
         if(not rd.exists(str(newRecordId)+"RecordId") and cursor.execute("SELECT id FROM records WHERE recordId=%s;",[newRecordId])==0):
-            rd.setex(str(newRecordId)+"RecordId",userId,600)
+            rd.setex(str(newRecordId)+"RecordId",6000,userId)
             break
     cursor.close()
     return jsonify({"code":0,"msg":"成功","recordId":newRecordId})
@@ -185,9 +185,9 @@ def setEthAddress():
     t=request.json.get("t")
     if(None in [address,sign,t,userId,sessionId]):return jsonify({"code":1,"msg":"参数过少"})
     t=int(t)
-    if(abs(t=time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
+    if(abs(t-time.time())==100):return jsonify({"code":2,"msg":"请求超时"})
     global db,rd,w3
-    if((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId):
+    if((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=str(userId)):
         return jsonify({"code":3,"msg":"会话过期"})
     db.ping(reconnect=True) 
     cursor = db.cursor()  
@@ -214,9 +214,9 @@ def uploadRecord():
     global rd,db
     db.ping(reconnect=True) 
     cursor = db.cursor()    
-    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
+    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=str(userId))):
         return jsonify({"code":2,"msg":"会话过期"})
-    if(not rd.exists(str(recordId)+"RecordId") or rd.get(str(recordId)+"RecordId")!=userId):
+    if(not rd.exists(str(recordId)+"RecordId") or rd.get(str(recordId)+"RecordId")!=str(userId)):
         return jsonify({"code":3,"msg":"会话过期"})
     cnt=0
     cnt=cursor.execute('INSERT INTO records (recordId, fileHash, selfSign, txId, status, userId) VALUES ("%s", "%s", "%s", "%s", 1, %s);',
@@ -230,7 +230,7 @@ def queryUserRecords():
     sessionId=request.json.get("sessionId") 
     if(None in [userId,sessionId]):return jsonify({"code":1,"msg":"参数错误"})
     global rd,db
-    if(((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
+    if(((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=str(userId))):
         return jsonify({"code":2,"msg":"会话过期"})
     db.ping(reconnect=True) 
     cursor = db.cursor() 
@@ -247,7 +247,7 @@ def querySingleRecords():
 
     if(None in [userId,sessionId,recordId]):return jsonify({"code":1,"msg":"参数错误"})
     global rd,db
-    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=userId)):
+    if(sessionId!="anonymous" and ((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=str(userId))):
         return jsonify({"code":2,"msg":"会话过期"})
     db.ping(reconnect=True) 
     cursor = db.cursor() 
