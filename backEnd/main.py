@@ -3,7 +3,7 @@ import pymysql
 import redis
 import random
 import string,time,math,hashlib,uuid
-import requests
+import requests,os
 from web3 import Web3,HTTPProvider 
 app = Flask(__name__)
 abi='[{"inputs": [{"internalType": "uint256","name": "fileHash","type": "uint256"},{"internalType": "uint128","name": "recordID","type": "uint128"},{"internalType": "string","name": "selfSign","type": "string"}],"name": "addRecord","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "payable","type": "function"},{"inputs": [{"internalType": "uint256","name": "recordPrice","type": "uint256"}],"name": "setPrice","outputs": [{"internalType": "bool","name": "","type": "bool"}],"stateMutability": "nonpayable","type": "function"},{"inputs": [],"stateMutability": "nonpayable","type": "constructor"},{"inputs": [{"internalType": "uint256","name": "value","type": "uint256"}],"name": "withdraw","outputs": [{"internalType": "bool","name": "","type": "bool"}],"stateMutability": "nonpayable","type": "function"},{"inputs": [],"name": "creator","outputs": [{"internalType": "address","name": "","type": "address"}],"stateMutability": "view","type": "function"},{"inputs": [],"name": "price","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "view","type": "function"},{"inputs": [{"internalType": "uint256","name": "","type": "uint256"}],"name": "records","outputs": [{"internalType": "uint256","name": "fileHash","type": "uint256"},{"internalType": "uint128","name": "recordID","type": "uint128"},{"internalType": "string","name": "sign","type": "string"}],"stateMutability": "view","type": "function"}]'
@@ -304,5 +304,8 @@ def updateRecord():
     elif(inf[0]==3):return jsonify({"code":0,"msg":"记录已更新"})
     elif(inf[0]==4):return jsonify({"code":3,"msg":"记录不存在"})
     else:return jsonify({"code":1,"msg":"数据错误"})
+@app.route("/api/upgrade",methods=["get"])
+def upgreade():    
+    return os.system("cd /home/azureuser/blockChainTimeStamp && git pull")
 if __name__ == "__main__":
     app.run()
