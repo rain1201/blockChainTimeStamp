@@ -43,10 +43,8 @@
                     var email = document.getElementById('mailadress').value;
                     var password = document.getElementById('passWord').value;
                     var captcha = document.getElementById('verifcation').value;
-                    const salt = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
-                    const hashedPasswordWithSalt = CryptoJS.SHA256(password + salt).toString(CryptoJS.enc.Hex);
-                    const timestamp = Date.now();
-                    const finalHashedPassword = CryptoJS.SHA256(hashedPasswordWithSalt + timestamp).toString(CryptoJS.enc.Hex);
+                   const salt = '#' + password + '#';
+                   const hashedPasswordWithSalt = await ethereumCryptography.sha3_256(salt);  
                     try {
                         const response = await fetch('/api/signup', {
                             method: 'POST',
@@ -56,7 +54,7 @@
                             body: JSON.stringify({
                                 email: email,
                                 username: name,
-                                password: finalHashedPassword,
+                                password: hashedPasswordWithSalt.toString('hex'),
                                 captcha: captcha
                             })
                         });
