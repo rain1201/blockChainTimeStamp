@@ -306,6 +306,6 @@ def updateRecord():
     else:return jsonify({"code":1,"msg":"数据错误"})
 @app.route("/api/upgrade",methods=["get"])
 def upgreade():    
-    return os.system("cd /home/azureuser/blockChainTimeStamp && git pull")
+    return str(os.system("cd /home/azureuser/blockChainTimeStamp && git pull"))
 if __name__ == "__main__":
     app.run()
