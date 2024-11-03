@@ -3,13 +3,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passWord');
 
-    loginSpan.addEventListener('click', function () {
+    loginSpan.addEventListener('click', async function () {
         const username = emailInput.value;
         const password = passwordInput.value;
-        const t = Math.floor(Date.now() / 1000);
+        const t = Date.now();
+        const salt = '#' + password + '#';
+        const hashedPassword = await ethereumCryptography.sha3_256(salt);
+        const finalhashedPassword = await ethereumCryptography.sha3_256(hashedPassword+t); 
         const dataToSend = {
             username: username,
-            password: password,
+            password: finalhashedPassword.toString('hex'),
             t: t
         };
 
@@ -24,9 +27,16 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.code === 0) {
                 alert('登录成功');
-                window.location.href = '../page3/page3.html';
+                if(data.hasEthAddress===0){
+                  window.location.href = '../page3/page3.html';
+                  const userId = data.userId;
+                  const sessionId = data.sessionId;
+                  Cookies.set('userId', userId);
+                  Cookies.set('sessionId', sessionId);
+                }else  window.location.href = '../page5/page5.html';
             } else {
                 alert(data.msg);
+                 console.log(data.msg);
             }
         })
         .catch(error => {
