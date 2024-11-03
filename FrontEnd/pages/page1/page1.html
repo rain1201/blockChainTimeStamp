@@ -4,10 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>trustmark</title>
+    <title>codefun</title>
     <link rel="stylesheet" href="../../index.css" />
     <link rel="stylesheet" href="./page1.css" />
     <script type="text/javascript" src="./page1.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.js"></script>
   </head>
   <body>
     <div class="flex-col relative page">
@@ -18,13 +20,13 @@
         <div class="flex-col justify-start items-center text-wrapper_4"><span class="text_4">Register</span></div>
       </div>
       <div class="flex-col justify-start items-center section_2">
-        <div class="flex-row section_3">
-          <div class="flex-col self-start group">
+        <div class="flex-row items-center section_3">
+          <div class="flex-col">
             <div class="flex-col self-stretch">
               <span class="self-start text_5">注册 TurstMark</span>
               <div class="flex-row self-stretch group_2">
                 <span class="font_2 text_6">已有账号？</span>
-                <span class="ml-12 font_2 text_7">请登录</span>
+                <span class="font_2 text_7 ml-12">请登录</span>
               </div>
               <div class="flex-col items-start self-stretch group_3">
                 <span class="font_3 text_8">登录表示同意</span>
@@ -35,33 +37,34 @@
               <div class="flex-row items-center section_4">
                 <div class="flex-row">
                   <span class="font_4">昵</span>
-                  <span class="ml-14 font_4">称</span>
+                  <span class="font_4 ml-14">称</span>      
                 </div>
                 <div class="section_5 view ml-49"></div>
+                <input type="text" id="name" style="border: none; width: 50%; height: 30px;" >
               </div>
-              <div class="mt-28 flex-row items-center section_4">
+              <div class="flex-row items-center section_1 mt-28">
                 <div class="flex-row">
                   <span class="font_5">邮</span>
                   <span class="font_5 ml-15">箱</span>
                 </div>
-                <div class="ml-50 section_5 view_2"></div>
+                <div class="section_5 view ml-50"></div>
+                <input type="text" id="mailadress" style="border: none; width: 50%; height: 30px;" >
               </div>
-              <div class="mt-28 flex-row items-center section_6">
+              <div class="flex-row items-center section_6 mt-28">
                 <div class="flex-row group_4">
                   <span class="font_5 text_10">密</span>
-                  <span class="ml-14 font_5 text_11">码</span>
+                  <span class="font_5 text_11 ml-14">码</span>
                 </div>
-                <img class="image_3 ml-345" src="../../images/70d816f61266883d80393b3dadf574cb.png" />
+                <input type="password" id="passWord" style="border: none; width: 50%; height: 30px; margin-left: 53px;" >
+               <img class="image_3 ml-30" src="../../images/b47a54c74ceeca81476d7f5d874da37e.png" id="toggleImage" />
+
               </div>
-              <div class="mt-28 flex-row items-center section_4">
-                <span class="font_5 text_12">手机号码</span>
-                <div class="section_5 view_3 ml-13"></div>
-              </div>
-              <div class="mt-28 flex-row section_7">
+              <div class="flex-row  items-center section_7 mt-28">
                 <div class="flex-col justify-start items-center relative text-wrapper_5">
                   <span class="text_13">获取验证码</span>
                 </div>
-                <div class="ml-4 section_5 view_4"></div>
+                <div class="section_5 view ml-4"></div>
+                <input type="text" id="verifcation" style="border: none; width: 50%; height: 30px;" >
               </div>
             </div>
             <div class="flex-col justify-start items-center self-center text-wrapper_6 mt-51">
