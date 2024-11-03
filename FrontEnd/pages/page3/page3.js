@@ -39,8 +39,12 @@
                 const data = await response.json();
                 if (data.code === 0) {
                     alert('登录成功');
+                    const userId = data.userId;
+                    const sessionId = data.sessionId;
+                    Cookies.set('userId', userId);
+                    Cookies.set('sessionId', sessionId);
                     console.log('登录成功，用户ID：', data.userId, '，会话ID：', data.sessionId);
-                    window.location.href = '../page2/page2.html';
+                    window.location.href = '../page5/page5.html';
                 } else {
                     alert(data.msg);
                     console.log(data.msg);
