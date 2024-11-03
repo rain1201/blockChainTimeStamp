@@ -110,6 +110,7 @@ def signup():
     emailCount=cursor.execute("SELECT id FROM users WHERE email=%s",email)
     if(emailCount!=0):return jsonify({"code":2,"msg":"邮箱已被注册"})
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
+    rd.delete(email+"EmailCaptcha")
     cnt=cursor.execute('INSERT INTO users (email, password, username) VALUES ("%s", "%s", "%s");',[email,password,username])
     db.commit()
     if(cnt==1):return jsonify({"code":0,"msg":"成功"})
