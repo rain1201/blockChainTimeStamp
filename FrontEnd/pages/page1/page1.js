@@ -1,5 +1,4 @@
- let isagree = false;
-
+       let isagree = false;
         document.addEventListener('DOMContentLoaded', function () {
             const textWrapper5 = document.querySelector('.text-wrapper_5');
             const text_13 = document.querySelector('.text_13');
@@ -38,40 +37,43 @@
                 });
             });
 
-            document.querySelector('.text_14').addEventListener('click', function () {
-                var name = document.getElementById('name').value;
-                var email = document.getElementById('mailadress').value;
-                var password = document.getElementById('passWord').value;
-                var captcha = document.getElementById('verifcation').value;
-                fetch('/api/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        username: name,
-                        password: password,
-                        captcha: captcha
-                    })
-                })
-             .then(function (response) {
-                    return response.json();
-                })
-             .then(function (response) {
-                    if (response.code === 0 && isagree === true) {
-                        alert('注册成功');
-                        window.location.href = '../page3/page3.html';
-                    } else if (response.code === 0 && isagree === false) {
-                        alert('请阅读并同意使用协议/隐私协议');
-                    } else {
-                        alert(response.msg);
+           document.querySelector('.text_14').addEventListener('click', async function () {
+                if (isagree === true) {
+                    var name = document.getElementById('name').value;
+                    var email = document.getElementById('mailadress').value;
+                    var password = document.getElementById('passWord').value;
+                    var captcha = document.getElementById('verifcation').value;
+                    const salt = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
+                    const hashedPasswordWithSalt = CryptoJS.SHA256(password + salt).toString(CryptoJS.enc.Hex);
+                    const timestamp = Date.now();
+                    const finalHashedPassword = CryptoJS.SHA256(hashedPasswordWithSalt + timestamp).toString(CryptoJS.enc.Hex);
+                    try {
+                        const response = await fetch('/api/signup', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: email,
+                                username: name,
+                                password: finalHashedPassword,
+                                captcha: captcha
+                            })
+                        });
+                        const data = await response.json();
+
+                        if (response.code === 0) {
+                            alert('注册成功');
+                            window.location.href = '../page3/page3.html';
+                        } else {
+                            alert(data.msg);
+                        }
+                    } catch (error) {
+                        console.log('注册请求出错：', error);
                     }
-                })
-             .catch(function (error) {
-                    console.log('注册请求出错：',
-                        error);
-                });
+                } else {
+                    alert('请阅读并同意使用协议/隐私协议');
+                }
             });
 
             const image = document.getElementById('toggleImage');
