@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.code === 0) {
                 alert('登录成功');
-                window.location.href = '../page5/page5.html';
+                window.location.href = '../page3/page3.html';
             } else {
                 alert(data.msg);
             }
