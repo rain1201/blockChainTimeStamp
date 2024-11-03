@@ -25,6 +25,7 @@
  + `msg`: 状态信息
  + `userId`: 用户ID
  + `sessionId`: 会话ID
+ + `hasEthAddress`: 用户是否绑定metamask，未绑定为0
 
 ### 3. 登出
 
@@ -62,7 +63,7 @@
  + `code`: 状态码（0：成功，1：参数过少，2：邮箱不存在，3：验证码错误，4：修改密码失败）
  + `msg`: 状态信息
 
-### 6. 使用MetaMusk登录
+### 6. 使用Metamask登录
 
 * **URL**: `/api/loginWithMeta`
 * **方法**: `POST`
