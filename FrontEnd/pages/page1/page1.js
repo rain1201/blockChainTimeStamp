@@ -64,7 +64,7 @@
 
                         if (response.code === 0) {
                             alert('注册成功');
-                            window.location.href = '../page3/page3.html';
+                            window.location.href = '../page2/page2.html';
                         } else {
                             alert(data.msg);
                         }
