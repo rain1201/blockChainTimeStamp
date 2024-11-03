@@ -61,7 +61,7 @@
              .then(function (response) {
                     if (response.code === 0 && isagree === true) {
                         alert('注册成功');
-                        window.location.href = '../page4/page4.html';
+                        window.location.href = '../page3/page3.html';
                     } else if (response.code === 0 && isagree === false) {
                         alert('请阅读并同意使用协议/隐私协议');
                     } else {
