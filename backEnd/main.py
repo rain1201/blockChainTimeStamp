@@ -274,7 +274,8 @@ def updateRecord():
     inf=cursor.fetchone()
     if(inf[0]==1):
         try:
-            tx=w3.eth.get_tx(inf[1])
+        #if(True):
+            tx=w3.eth.get_transaction(inf[1].removeprefix("'").removesuffix("'"))
             blockNumber = tx.blockNumber
             block = w3.eth.get_block(blockNumber)
             ts = block.timestamp            
@@ -288,17 +289,18 @@ def updateRecord():
         blockInf=blockInf[1]
         cursor.execute('SELECT fileHash,selfSign,userId FROM records WHERE recordId="%s";',[recordId]);
         databaseInf=cursor.fetchone();
-        if(databaseInf[0].lower()!=hex(blockInf["fileHash"]).removeprefix("0x") or databaseInf[1]!=hex(blockInf["selfSign"])):
+        if(databaseInf[0].lower().removeprefix("'").removesuffix("'")!=hex(blockInf["fileHash"]).removeprefix("0x") or 
+           databaseInf[1].removeprefix("'").removesuffix("'")!=blockInf["selfSign"]):
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
             db.commit()
             return jsonify({"code":6,"msg":"区块数据不同步"})
-        cursor.execute('SELECT ethAddress FROM users WHERE userId=%s;',[databaseInf[2]])
-        if(cursor.fetchone()[0]!=tx.get("from") and databaseInf[2]!=0):
+        cursor.execute('SELECT ethAddress FROM users WHERE id=%s;',[databaseInf[2]])
+        if(cursor.fetchone()[0].removeprefix("'").removesuffix("'")!=tx.get("from") and databaseInf[2]!=0):
             cursor.execute('UPDATE records SET status=2 WHERE recordId="%s";',[recordId]);
             db.commit()
             return jsonify({"code":6,"msg":"区块数据不同步"})
         cursor.execute('UPDATE records SET status=3 WHERE recordId="%s";',[recordId]);
-        cursor.execute('UPDATE records SET timestamp=%s WHERE recordId="%s";',[str(ts),recordId]);
+        cursor.execute('UPDATE records SET timestamp=%s WHERE recordId="%s";',[ts,recordId]);
         db.commit()
         return jsonify({"code":0,"msg":"记录已更新"})
     elif(inf[0]==2):return jsonify({"code":1,"msg":"区块数据不同步"})
