@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('登录成功');
                   Cookies.set('userId', userId);
                   Cookies.set('sessionId', sessionId);
-                if(data.hasEthAddress>=0){
+                if(data.hasEthAddress<20){
                   window.location.href = '../page3/page3.html';
                   const userId = data.userId;
                   const sessionId = data.sessionId;
