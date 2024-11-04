@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = passwordInput.value;
         const t = Date.now();
         const salt = '#' + password + '#';
-        const hashedPassword = await ethereumCryptography.sha3_256(salt);
-        const finalhashedPassword = await ethereumCryptography.sha3_256(hashedPassword+t); 
+        const hashedPassword = await sha3_256(salt);
+        const finalhashedPassword = await sha3_256(hashedPassword+t); 
         const dataToSend = {
             username: username,
             password: finalhashedPassword.toString('hex'),
