@@ -300,7 +300,7 @@ def updateRecord():
             db.commit()
             return jsonify({"code":6,"msg":"区块数据不同步"})
         cursor.execute('UPDATE records SET status=3 WHERE recordId="%s";',[recordId]);
-        cursor.execute('UPDATE records SET timestamp=%s WHERE recordId="%s";',[ts,recordId]);
+        cursor.execute('UPDATE records SET `timestamp`=%s WHERE recordId="%s";',[ts,recordId]);
         db.commit()
         return jsonify({"code":0,"msg":"记录已更新"})
     elif(inf[0]==2):return jsonify({"code":1,"msg":"区块数据不同步"})
