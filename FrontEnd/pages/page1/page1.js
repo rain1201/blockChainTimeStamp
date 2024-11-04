@@ -44,7 +44,7 @@
                     var password = document.getElementById('passWord').value;
                     var captcha = document.getElementById('verifcation').value;
                    const salt = '#' + password + '#';
-                   const hashedPasswordWithSalt = await ethereumCryptography.sha3_256(salt);  
+                   const hashedPasswordWithSalt = await sha3_256(salt);  
                     try {
                         const response = await fetch('/api/signup', {
                             method: 'POST',
