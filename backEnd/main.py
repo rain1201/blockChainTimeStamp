@@ -198,7 +198,7 @@ def setEthAddress():
     cnt=cursor.execute("SELECT ethAddress,email FROM users WHERE id=%s;",[userId])
     inf=cursor.fetchone()
     if(inf[0]!=None):return jsonify({"code":5,"msg":"已绑定"})
-    if(w3.eth.account.verify_message("Trying to sign in timestamp service with %s, time is %s"%(inf[1],str(t)),sign)!=address):
+    if(w3.eth.account.verify_message("Trying to sign in timestamp service, time is %s"%(str(t)),sign)!=address):
         return jsonify({"code":6,"msg":"签名错误"})
     cnt=cursor.execute('UPDATE users SET ethAddress=%s WHERE id=%s;',[address,userId])
     db.commit()

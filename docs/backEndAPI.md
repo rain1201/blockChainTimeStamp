@@ -97,7 +97,7 @@
  + `userId`: 用户ID
  + `sessionId`: 会话ID
  + `address`: 以太坊地址
- + `sign`: 签名（"Trying to sign in timestamp service with {EMAIL}, time is {TIMESTAMP}"）
+ + `sign`: 签名（"Trying to sign in timestamp service, time is {TIMESTAMP}"）
  + `t`: 时间戳
 * **返回值**:
  + `code`: 状态码（0：成功，1：参数过少，2：请求超时，3：会话过期，4：地址已被绑定，5：已绑定，6：签名错误）
