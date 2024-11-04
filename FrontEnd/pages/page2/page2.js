@@ -27,12 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.code === 0) {
                 alert('登录成功');
-                if(data.hasEthAddress===0){
+                  Cookies.set('userId', userId);
+                  Cookies.set('sessionId', sessionId);
+                if(data.hasEthAddress>=0){
                   window.location.href = '../page3/page3.html';
                   const userId = data.userId;
                   const sessionId = data.sessionId;
-                  Cookies.set('userId', userId);
-                  Cookies.set('sessionId', sessionId);
+
                 }else  window.location.href = '../page5/page5.html';
             } else {
                 alert(data.msg);
