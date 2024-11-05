@@ -1,13 +1,14 @@
-       const connectButton = document.querySelector('.text_6');
-        if (typeof window.ethereum === 'undefined') {
-            console.log('请安装MetaMask钱包扩展');
-            return;
-        }
+document.addEventListener('DOMContentLoaded', function() {       
+        const connectButton = document.querySelector('.text_6');  
         let web3;
         let address;
         let sign;
         let t;
         const connectToMetaMask = async () => {
+           if (typeof window.ethereum === 'undefined') {
+            console.log('请安装MetaMask钱包扩展');
+            return;
+           }
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 address = accounts[0];
@@ -61,3 +62,14 @@
             connectButton.style.color ='red';
            }, 3000);
         });
+
+       const foxImage = document.getElementById('fox-image');
+
+      foxImage.addEventListener('mouseover', function() {
+            foxImage.src = '../../images/fox_open.jpg'; 
+      });
+     foxImage.addEventListener('mouseout', function() {
+            foxImage.src = '../../images/fox_closed.jpg'; 
+      });
+
+ });
