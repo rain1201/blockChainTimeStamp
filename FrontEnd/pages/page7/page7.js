@@ -41,11 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then(response => response.json())
 			.then(data => {
-				if(data.cnt===0){alert("未找到记录");return;}
+				if(data.cnt<1){alert("未找到记录，或记录未更新");return;}
 				status=data.data[0][4];
-				oFileHash=data.data[0][1];
-				selfSign=data.data[0][2];
-				txId=data.data[0][3];
+				oFileHash=data.data[0][1].replaceAll("'","");
+				selfSign=data.data[0][2].replaceAll("'","");
+				txId=data.data[0][3].replaceAll("'","");
 				ts=data.data[0][5];
 				if(fileHash!="" && fileHash!=oFileHash){alert("文件不一致");}
 				if(fileHash!="" && fileHash==oFileHash){alert("文件一致");}
