@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.log(data.data);
 			});
 	});
-	getinf.addEventListener('click', function() {
+	update.addEventListener('click', function() {
 		if(rinput.value.length<5){alert("请输入id");return;}
 		dataToSend = {
 			recordId: rinput.value
