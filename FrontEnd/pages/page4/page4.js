@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-            const setEthAddressButton = document.querySelector('.text_4');
+            const setEthAddressButton = document.querySelector('.text_6');
             let web3;
             let address;
             let sign;
@@ -14,12 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     return;
                 }
                 try {
+                    console.log('即将请求MetaMask账户访问');
                     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                     address = accounts[0];
+                    console.log('成功获取MetaMask账户地址：', address);
                     web3 = new Web3(window.ethereum);
                     t = Math.floor(Date.now() / 1000);
                     const message = `Trying to sign in timestamp service, time is ${t}`;
+                    console.log('即将生成签名，消息内容：', message, '，账户地址：', address);
                     sign = await web3.eth.personal.sign(message, address);
+                    console.log('成功生成签名：', sign);
                 } catch (err) {
                     if (err.code === 4001) {
                         console.log('请在MetaMask中授权账户访问');
