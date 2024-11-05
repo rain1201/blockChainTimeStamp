@@ -133,7 +133,7 @@ const abi =[
 		"stateMutability": "view",
 		"type": "function"
 	}
-]；
+];
 
 function handleAccountsChanged(accounts) {
 	web3 = new Web3(window.ethereum);
