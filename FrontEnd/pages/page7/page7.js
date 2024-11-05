@@ -42,18 +42,33 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(response => response.json())
 			.then(data => {
 				if(data.cnt===0){alert("未找到记录");return;}
-				status=data.data[4];
-				oFileHash=data.data[1];
-				selfSign=data.data[2];
-				txId=data.data[3];
-				ts=data.data[5];
+				status=data.data[0][4];
+				oFileHash=data.data[0][1];
+				selfSign=data.data[0][2];
+				txId=data.data[0][3];
+				ts=data.data[0][5];
 				if(fileHash!="" && fileHash!=oFileHash){alert("文件不一致");}
 				if(fileHash!="" && fileHash==oFileHash){alert("文件一致");}
 				console.log(data.data);
 			});
 	});
+	getinf.addEventListener('click', function() {
+		if(rinput.value.length<5){alert("请输入id");return;}
+		dataToSend = {
+			recordId: rinput.value
+		};
+		fetch('/api/updateRecord', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(dataToSend)
+			})
+			.then(response => response.json())
+			.then(data => {alert(data.msg);});
+	});
 	bc.addEventListener('click', function() {
-		if(txId!=""){window.open("https://sepolia.etherscan.io/tx/"+txId, "_blank", "resizable,scrollbars,status");}
+		if(txId!=""){window.open("https://sepolia.etherscan.io/tx/"+txId.replaceAll("'",""), "_blank", "resizable,scrollbars,status");}
 	});
 	
 });
