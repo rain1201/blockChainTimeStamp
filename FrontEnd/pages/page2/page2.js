@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     loginSpan.addEventListener('click', async function () {
         const username = emailInput.value;
         const password = passwordInput.value;
-        const t = Date.now();
+        const t = Math.floor(Date.now() / 1000);
         const salt = '#' + password + '#';
         const hashedPassword = await sha3_256(salt);
         const finalhashedPassword = await sha3_256(hashedPassword+t); 
@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
                   Cookies.set('sessionId', sessionId);
                 if(data.hasEthAddress<20){
                   window.location.href = '../page4/page4.html';
-
                 }else  window.location.href = '../page5/page5.html';
             } else {
                 alert(data.msg);
@@ -65,10 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = '../page1/page1.html';
     });
    
-   /* const  register1= document.querySelector('.font_3');
-    register1.addEventListener('click', function () {
-        window.location.href = '../page18/page18.html';
-    });*/
+      const  register2= document.querySelector('.font_3');
+        register2.addEventListener('click', function () {
+        window.location.href = '../page3/page3.html';
+    });
 
     
     const image = document.getElementById('toggleImage');
