@@ -104,7 +104,8 @@ const abi = [{
 }]
 
 function handleAccountsChanged(accounts) {
-	var acc = document.getElementById("acc");
+	web3 = new Web3(window.web3.currentProvider);
+	contract = new web3.eth.Contract(abi, address);
 	if (accounts.length === 0) {
 		console.log('Please connect to MetaMask.');
 	} else {
@@ -214,7 +215,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.error(err);
 			}
 		});
-	web3 = new Web3(window.web3.currentProvider);
-	contract = new web3.eth.Contract(abi, address);
+
 
 });
