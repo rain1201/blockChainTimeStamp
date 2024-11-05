@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  });*/
 	uId = parseInt(Cookies.get("userId"));
 	sId = Cookies.get("sessionId");
-	//if(userId<=0){window.location.href = '../page2/page2.html';}
+	if(isNaN(uId)){sessionId="anonymous";}
 	const fileSelector = document.getElementById("fs");
 	const submit = document.getElementById("submit");
 	const mark = document.getElementById("note");
@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		fr.readAsText(this.files[0]);
 	});
 	submit.addEventListener('click', function() {
+		if(fileHash==""){alert("请选择文件")；return ;}
 		var dataToSend = {
 			userId: uId,
 			sessionId: sId
@@ -156,10 +157,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(data => {
 				if (data.code === 0) {
 					rId = data.recordId;
-					contract.methods.bet(hash).send({
+					contract.methods.bet(web3.utils.toBN("0x"+fileHash),web3.utils.toBN("0x"+rId),mark.value).send({
 							from: account,
 							gasPrice: "1000000000",
-							value: String(parseFloat(val.value) * 1000000000000000000)
+							value: String(0)
 						})
 						.on('error', function(error, receipt) {
 							alert(error, receipt);
@@ -169,10 +170,14 @@ document.addEventListener('DOMContentLoaded', function() {
 							console.log(data);
 							dataToSend = {
 								recordId: rId,
-								txId: 1,
+								txId: data.transactionHash,
+								userId:uId,
+								sessionId:sId,
+								selfSign:mark.value,
+								fileHash:fileHash
 							};
 
-							fetch('/api/', {
+							fetch('/api/uploadRecord', {
 									method: 'POST',
 									headers: {
 										'Content-Type': 'application/json'
@@ -182,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
 								.then(response => response.json())
 								.then(data => {
 									if (data.code === 0) {
-										alert('成功');
+										alert('成功'+rId);
 									} else {
 										alert(data.msg);
 										console.log(data.msg);
@@ -198,8 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				console.log('请求出错：', error);
 			});
 	});
-	ethereum
-		.request({
+	ethereum.request({
 			method: 'eth_requestAccounts'
 		})
 		.then(handleAccountsChanged)
