@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(data => {
 				if (data.code === 0) {
 					rId = data.recordId;
-					contract.methods.addRecord("0x"+fileHash,"0x"+rId,mark.value).send({
+					contract.methods.addRecord(web3.utils.hexToNumber("0x"+fileHash),web3.utils.hexToNumber("0x"+rId),mark.value).send({
 							from: account,
 							gasPrice: "1000000000",
 							value: String(0)
