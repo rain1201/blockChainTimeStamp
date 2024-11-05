@@ -253,9 +253,9 @@ def querySingleRecords():
     db.ping(reconnect=True) 
     cursor = db.cursor() 
     cnt=0
-    if(sessionId!="anonymous"):cnt=cursor.execute('SELECT recordId, fileHash, selfSign, txId, status ' 
+    if(sessionId!="anonymous"):cnt=cursor.execute('SELECT recordId, fileHash, selfSign, txId, status, "timestamp" ' 
     'FROM records WHERE userId=%s AND recordId="%s";',[userId,recordId])
-    else:cnt=cursor.execute('SELECT recordId, fileHash, selfSign, txId, status ' 
+    else:cnt=cursor.execute('SELECT recordId, fileHash, selfSign, txId, status, "timestamp" ' 
     'FROM records WHERE recordId="%s" AND (status=3 OR status=4);',[recordId])
     ret={"code":0,"count":cnt,"data":[]}
     for _ in range(cnt):ret["data"].append(cursor.fetchone())
