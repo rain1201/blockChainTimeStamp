@@ -32,8 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   Cookies.set('userId', userId);
                   Cookies.set('sessionId', sessionId);
                 if(data.hasEthAddress<20){
-                  window.location.href = '../page3/page3.html';
-
+                  window.location.href = '../page4/page4.html';
 
                 }else  window.location.href = '../page5/page5.html';
             } else {
