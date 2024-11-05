@@ -104,7 +104,7 @@ const abi = [{
 }]
 
 function handleAccountsChanged(accounts) {
-	web3 = new Web3();
+	web3 = new Web3(window.ethereum);
 	contract = new web3.eth.Contract(abi, address);
 	if (accounts.length === 0) {
 		console.log('Please connect to MetaMask.');
