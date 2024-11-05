@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  });*/
 	uId = parseInt(Cookies.get("userId"));
 	sId = Cookies.get("sessionId");
-	if(isNaN(uId)){sessionId="anonymous";}
+	if(isNaN(uId)){sId="anonymous";}
 	const fileSelector = document.getElementById("fs");
 	const submit = document.getElementById("submit");
 	const mark = document.getElementById("note");

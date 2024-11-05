@@ -11,7 +11,7 @@ var dataToSend;
 document.addEventListener('DOMContentLoaded', function() {
 	uId = parseInt(Cookies.get("userId"));
 	sId = Cookies.get("sessionId");
-	if(isNaN(uId)){sessionId="anonymous";}
+	if(isNaN(uId)){sId="anonymous";}
 	const fileSelector = document.getElementById("fs");
 	const rinput = document.getElementById("rid");
 	const update = document.getElementById("update");
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			sessionId: sId,
 			recordId: rinput.value
 		};
-		fetch('/api/querySingleRecords', {
+		fetch('/api/querySingleRecordsDetail', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
