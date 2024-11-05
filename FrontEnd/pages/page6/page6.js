@@ -5,103 +5,135 @@ const address = "0x618399f465602b385ab77adb4b772bdcca8bf601";
 var web3 = null;
 var contract = null;
 var account = null;
-const abi = [{
-	"inputs": [{
-		"internalType": "uint256",
-		"name": "fileHash",
-		"type": "uint256"
-	}, {
-		"internalType": "uint128",
-		"name": "recordID",
-		"type": "uint128"
-	}, {
-		"internalType": "string",
-		"name": "selfSign",
-		"type": "string"
-	}],
-	"name": "addRecord",
-	"outputs": [{
-		"internalType": "uint256",
-		"name": "",
-		"type": "uint256"
-	}],
-	"stateMutability": "payable",
-	"type": "function"
-}, {
-	"inputs": [{
-		"internalType": "uint256",
-		"name": "recordPrice",
-		"type": "uint256"
-	}],
-	"name": "setPrice",
-	"outputs": [{
-		"internalType": "bool",
-		"name": "",
-		"type": "bool"
-	}],
-	"stateMutability": "nonpayable",
-	"type": "function"
-}, {
-	"inputs": [],
-	"stateMutability": "nonpayable",
-	"type": "constructor"
-}, {
-	"inputs": [{
-		"internalType": "uint256",
-		"name": "value",
-		"type": "uint256"
-	}],
-	"name": "withdraw",
-	"outputs": [{
-		"internalType": "bool",
-		"name": "",
-		"type": "bool"
-	}],
-	"stateMutability": "nonpayable",
-	"type": "function"
-}, {
-	"inputs": [],
-	"name": "creator",
-	"outputs": [{
-		"internalType": "address",
-		"name": "",
-		"type": "address"
-	}],
-	"stateMutability": "view",
-	"type": "function"
-}, {
-	"inputs": [],
-	"name": "price",
-	"outputs": [{
-		"internalType": "uint256",
-		"name": "",
-		"type": "uint256"
-	}],
-	"stateMutability": "view",
-	"type": "function"
-}, {
-	"inputs": [{
-		"internalType": "uint256",
-		"name": "",
-		"type": "uint256"
-	}],
-	"name": "records",
-	"outputs": [{
-		"internalType": "uint256",
-		"name": "fileHash",
-		"type": "uint256"
-	}, {
-		"internalType": "uint128",
-		"name": "recordID",
-		"type": "uint128"
-	}, {
-		"internalType": "string",
-		"name": "sign",
-		"type": "string"
-	}],
-	"stateMutability": "view",
-	"type": "function"
-}]
+const abi =[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "fileHash",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint128",
+				"name": "recordID",
+				"type": "uint128"
+			},
+			{
+				"internalType": "string",
+				"name": "selfSign",
+				"type": "string"
+			}
+		],
+		"name": "addRecord",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "recordPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "setPrice",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "withdraw",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "creator",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "price",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "records",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "fileHash",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint128",
+				"name": "recordID",
+				"type": "uint128"
+			},
+			{
+				"internalType": "string",
+				"name": "sign",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]；
 
 function handleAccountsChanged(accounts) {
 	web3 = new Web3(window.ethereum);
