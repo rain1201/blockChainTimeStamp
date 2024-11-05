@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		fr.readAsText(this.files[0]);
 	});
 	submit.addEventListener('click', function() {
-		if(fileHash==""){alert("请选择文件")；return ;}
+		if(fileHash==""){alert("请选择文件");return;}
 		var dataToSend = {
 			userId: uId,
 			sessionId: sId
