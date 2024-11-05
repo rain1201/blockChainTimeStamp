@@ -191,9 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (data.code === 0) {
 					rId = data.recordId;
 					contract.methods.addRecord(web3.utils.hexToNumberString("0x"+fileHash),web3.utils.hexToNumberString("0x"+rId),mark.value).send({
-							from: account,
-							gasPrice: "1000000000",
-							value: String(0)
+							from: account
 						})
 						.on('error', function(error, receipt) {
 							alert(error, receipt);
