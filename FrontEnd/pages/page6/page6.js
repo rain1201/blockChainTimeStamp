@@ -191,7 +191,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				if (data.code === 0) {
 					rId = data.recordId;
 					contract.methods.addRecord(web3.utils.hexToNumberString("0x"+fileHash),web3.utils.hexToNumberString("0x"+rId),mark.value).send({
-							from: account
+							from: account,
+							value: 100
 						})
 						.on('error', function(error, receipt) {
 							alert(error, receipt);
