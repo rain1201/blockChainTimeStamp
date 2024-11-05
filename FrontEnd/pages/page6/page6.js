@@ -104,7 +104,7 @@ const abi = [{
 }]
 
 function handleAccountsChanged(accounts) {
-	web3 = new Web3(window.web3.currentProvider);
+	web3 = new Web3();
 	contract = new web3.eth.Contract(abi, address);
 	if (accounts.length === 0) {
 		console.log('Please connect to MetaMask.');
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			.then(data => {
 				if (data.code === 0) {
 					rId = data.recordId;
-					contract.methods.bet(web3.utils.toBN("0x"+fileHash),web3.utils.toBN("0x"+rId),mark.value).send({
+					contract.methods.bet(web3.utils.toBigInt("0x"+fileHash),web3.utils.toBigInt("0x"+rId),mark.value).send({
 							from: account,
 							gasPrice: "1000000000",
 							value: String(0)
