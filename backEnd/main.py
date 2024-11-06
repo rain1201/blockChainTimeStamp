@@ -139,7 +139,7 @@ def loginWithMeta():
     t=request.json.get("t")
     if(None in [address,sign,t]):return jsonify({"code":1,"msg":"参数过少"})
     t=int(t)
-    if(abs(t=time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
+    if(abs(t-time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
     global db,rd,w3
     address=w3.to_checksum_address(address)
     db.ping(reconnect=True) 
