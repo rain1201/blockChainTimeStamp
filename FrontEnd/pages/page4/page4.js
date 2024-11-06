@@ -7,18 +7,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const userId = Cookies.get('userId');
             const sessionId = Cookies.get('sessionId');
-
+			console.log('即将请求MetaMask账户访问');
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            address = accounts[0];
+            console.log('成功获取MetaMask账户地址：', address);
+            web3 = new Web3(window.ethereum);
             const connectToMetaMask = async () => {
                 if (typeof window.ethereum === 'undefined') {
                     console.log('请安装MetaMask钱包扩展');
                     return;
                 }
                 try {
-                    console.log('即将请求MetaMask账户访问');
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    address = accounts[0];
-                    console.log('成功获取MetaMask账户地址：', address);
-                    web3 = new Web3(window.ethereum);
                     t = Math.floor(Date.now() / 1000);
                     const message = `Trying to sign in timestamp service, time is ${t}`;
                     console.log('即将生成签名，消息内容：', message, '，账户地址：', address);
