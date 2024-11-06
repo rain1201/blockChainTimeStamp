@@ -4,7 +4,8 @@ import redis
 import random
 import string,time,math,hashlib,uuid
 import requests,os
-from web3 import Web3,HTTPProvider 
+from web3 import Web3,HTTPProvider
+from eth_account.messages import encode_defunct
 app = Flask(__name__)
 abi='[{"inputs": [{"internalType": "uint256","name": "fileHash","type": "uint256"},{"internalType": "uint128","name": "recordID","type": "uint128"},{"internalType": "string","name": "selfSign","type": "string"}],"name": "addRecord","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "payable","type": "function"},{"inputs": [{"internalType": "uint256","name": "recordPrice","type": "uint256"}],"name": "setPrice","outputs": [{"internalType": "bool","name": "","type": "bool"}],"stateMutability": "nonpayable","type": "function"},{"inputs": [],"stateMutability": "nonpayable","type": "constructor"},{"inputs": [{"internalType": "uint256","name": "value","type": "uint256"}],"name": "withdraw","outputs": [{"internalType": "bool","name": "","type": "bool"}],"stateMutability": "nonpayable","type": "function"},{"inputs": [],"name": "creator","outputs": [{"internalType": "address","name": "","type": "address"}],"stateMutability": "view","type": "function"},{"inputs": [],"name": "price","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "view","type": "function"},{"inputs": [{"internalType": "uint256","name": "","type": "uint256"}],"name": "records","outputs": [{"internalType": "uint256","name": "fileHash","type": "uint256"},{"internalType": "uint128","name": "recordID","type": "uint128"},{"internalType": "string","name": "sign","type": "string"}],"stateMutability": "view","type": "function"}]'
 contract="0x618399f465602b385ab77adb4b772bdcca8bf601"
@@ -147,7 +148,7 @@ def loginWithMeta():
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
-    if(w3.eth.account.recover_message("Trying to login timestamp service, time is "+str(t), signature=sign)!=address):
+    if(w3.eth.account.recover_message(encode_defunct(("Trying to login timestamp service, time is "+str(t)).encode()), signature=sign)!=address):
         return jsonify({"code":5,"msg":"密码错误"})
     userInf=cursor.fetchone()
     while(1):
@@ -198,7 +199,7 @@ def setEthAddress():
     cnt=cursor.execute("SELECT ethAddress,email FROM users WHERE id=%s;",[userId])
     inf=cursor.fetchone()
     if(inf[0]!=None):return jsonify({"code":5,"msg":"已绑定"})
-    if(w3.eth.account.recover_message("Trying to sign in timestamp service, time is %s"%(str(t)), signature=sign)!=address):
+    if(w3.eth.account.recover_message(encode_defunct(("Trying to sign in timestamp service, time is %s"%(str(t))).encode()), signature=sign)!=address):
         return jsonify({"code":6,"msg":"签名错误"})
     cnt=cursor.execute('UPDATE users SET ethAddress="%s" WHERE id=%s;',[address,userId])
     db.commit()
