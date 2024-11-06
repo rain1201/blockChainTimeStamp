@@ -4,11 +4,28 @@ document.addEventListener('DOMContentLoaded', function () {
             let address;
             let sign;
             let t;
-
+			function handleAccountsChanged(accounts) {
+	web3 = new Web3(window.ethereum);
+	contract = new web3.eth.Contract(abi, address);
+	if (accounts.length === 0) {
+		console.log('Please connect to MetaMask.');
+	} else {
+		address = accounts[0];
+	}
+}
             const userId = Cookies.get('userId');
             const sessionId = Cookies.get('sessionId');
 			console.log('即将请求MetaMask账户访问');
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            window.ethereum.request({ method: 'eth_requestAccounts' })
+                .then(handleAccountsChanged)
+                .catch((err) => {
+		             if (err.code === 4001) {
+				     console.log('Please connect to MetaMask.');
+					} else {
+				console.error(err);
+			}
+		});
+
             address = accounts[0];
             console.log('成功获取MetaMask账户地址：', address);
             web3 = new Web3(window.ethereum);
