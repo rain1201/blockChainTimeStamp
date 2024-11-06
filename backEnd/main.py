@@ -141,6 +141,7 @@ def loginWithMeta():
     t=int(t)
     if(abs(t=time.time())>100):return jsonify({"code":2,"msg":"请求超时"})
     global db,rd,w3
+    address=w3.to_checksum_address(address)
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
@@ -189,6 +190,7 @@ def setEthAddress():
     t=int(t)
     if(abs(t-time.time())==100):return jsonify({"code":2,"msg":"请求超时"})
     global db,rd,w3
+    address=w3.to_checksum_address(address)
     if((not rd.exists(str(sessionId)+"sessionId")) or rd.get(str(sessionId)+"sessionId")!=str(userId)):
         return jsonify({"code":3,"msg":"会话过期"})
     db.ping(reconnect=True) 
