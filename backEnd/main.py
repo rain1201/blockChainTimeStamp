@@ -155,7 +155,7 @@ def loginWithMeta():
     while(1):
         newSessionId=uuid.uuid4().hex
         if(not rd.exists(str(newSessionId)+"sessionId")):
-            rd.setex(str(newSessionId)+"sessionId",userInf[0],86400)
+            rd.setex(str(newSessionId)+"sessionId",86400,userInf[0])
             #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
     return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId})
