@@ -145,7 +145,7 @@ def loginWithMeta():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    userCount=cursor.execute('SELECT userId FROM users WHERE ethAddress="%s";',address)
+    userCount=cursor.execute('SELECT id FROM users WHERE ethAddress="%s";',address)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
