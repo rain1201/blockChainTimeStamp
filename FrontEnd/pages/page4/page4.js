@@ -24,31 +24,26 @@ document.addEventListener('DOMContentLoaded', function () {
 				console.error(err);
 			}
 		});
+		const siweSign = async (siweMessage) => {
+  try {
+    const msg = web3.utils.utf8ToHex(siweMessage);
+    sign = await window.ethereum
+      .request({
+        method: "personal_sign",
+        params: [msg, address],
+      })
+  } catch (err) {
+    console.error(err);
+  }
+}
 
-            console.log('成功获取MetaMask账户地址：', address);
-            const connectToMetaMask = async () => {
-                if (typeof window.ethereum === 'undefined') {
-                    console.log('请安装MetaMask钱包扩展');
-                    return;
-                }
-                try {
-                    t = Math.floor(Date.now() / 1000);
-                    const message = `Trying to sign in timestamp service, time is ${t}`;
-                    console.log('即将生成签名，消息内容：', message, '，账户地址：', address);
-                    sign=await web3.eth.sign(web3.utils.utf8ToHex(message), address);
-                    console.log('成功生成签名：', sign);
-                } catch (err) {
-                    if (err.code === 4001) {
-                        console.log('请在MetaMask中授权账户访问');
-                    } else {
-                        console.error(err);
-                    }
-                }
-            };
-
+            
             const setEthAddress = async () => {
                 try {
-                    await connectToMetaMask();
+					t = Math.floor(Date.now() / 1000);
+                    const message = `Trying to sign in timestamp service, time is ${t}`;
+                    console.log('即将生成签名，消息内容：', message, '，账户地址：', address);
+                    await siweSign(message);
 
                     const response = await fetch('/api/setEthAddress', {
                         method: 'POST',
