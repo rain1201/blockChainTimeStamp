@@ -108,7 +108,7 @@ def signup():
     global db,rd
     cursor=db.cursor()
     db.ping(reconnect=True)
-    emailCount=cursor.execute("SELECT id FROM users WHERE email=%s",email)
+    emailCount=cursor.execute('SELECT id FROM users WHERE email="%s";',email)
     if(emailCount!=0):return jsonify({"code":2,"msg":"邮箱已被注册"})
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
     rd.delete(email+"EmailCaptcha")
