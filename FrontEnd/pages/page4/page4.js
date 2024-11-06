@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     t = Math.floor(Date.now() / 1000);
                     const message = `Trying to sign in timestamp service, time is ${t}`;
                     console.log('即将生成签名，消息内容：', message, '，账户地址：', address);
-                    sign = await web3.eth.personal.sign(message, address);
+                    sign=await web3.eth.sign(message, address);
                     console.log('成功生成签名：', sign);
                 } catch (err) {
                     if (err.code === 4001) {
