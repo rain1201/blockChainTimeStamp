@@ -9,6 +9,17 @@ var txId="";
 var ts=0;
 var dataToSend;
 document.addEventListener('DOMContentLoaded', function() {
+       var section_6Element = document.querySelector('.section_6');
+       var spanElement = section_6Element.querySelector('span');
+       var fileInput = document.getElementById('fs');
+       fileInput.addEventListener('change', function() {
+           var fileName = this.files[0].name;
+           spanElement.textContent = '已选择文件：' + fileName;
+       });
+          section_6Element.addEventListener('click', function() {
+           fileInput.click();
+       });
+
 	uId = parseInt(Cookies.get("userId"));
 	sId = Cookies.get("sessionId");
 	if(isNaN(uId)){sId="anonymous";uId=0;}
@@ -17,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const update = document.getElementById("update");
 	const getinf = document.getElementById("getinf");
 	const bc = document.getElementById("viewinbc");
+        const canvas = document.getElementById('paperCanvas');
 	fileSelector.addEventListener('change', function() {
 		var fr = new FileReader();
 		fr.onload = function() {
@@ -47,9 +59,30 @@ document.addEventListener('DOMContentLoaded', function() {
 				selfSign=data.data[0][2].replaceAll("'","");
 				txId=data.data[0][3].replaceAll("'","");
 				ts=data.data[0][5];
-				if(fileHash!="" && fileHash!=oFileHash){alert("文件不一致");}
-				if(fileHash!="" && fileHash==oFileHash){alert("文件一致");}
+                                var ctx = canvas.getContext('2d');
+                                ctx.font = "25px Arial";
+				if(fileHash!="" && fileHash!=oFileHash){
+                                       alert("文件不一致,请查收文件不一致证书");
+                                       ctx.fillText("您检验的文件是不一致的 ，请您注意哦" , 20, 20 );
+   
+                                }
+				if(fileHash!="" && fileHash==oFileHash){
+                                        alert("文件一致，请查收文件一致证书");
+                                        ctx.fillText("您检验的文件是一致的 ，恭喜您" , 20, 20 );
+                                }
 				console.log(data.data);
+                                ctx.font = "16px Arial";
+                                ctx.fillText("Record ID: " + rinput.value, 10, 50);
+                                ctx.fillText("File Hash: " + oFileHash, 10, 70);
+                                ctx.fillText("Self Sign: " + selfSign, 10, 90);
+                                ctx.fillText("Transaction ID: " + txId, 10, 110);
+                                ctx.fillText("Timestamp: " + new Date(ts * 1000).toLocaleString(), 10, 130);
+                                var link = document.createElement('a');
+                                canvas.toBlob(function (blob) {
+                                   link.href = URL.createObjectURL(blob);
+                                   link.download = 'record.jpg';
+                                   link.click();
+                               }, 'image/jpeg');
 			});
 	});
 	update.addEventListener('click', function() {
@@ -71,4 +104,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		if(txId!=""){window.open("https://sepolia.etherscan.io/tx/"+txId.replaceAll("'",""), "_blank", "resizable,scrollbars,status");}
 	});
 	
+       const renzheng = document.querySelector('.text_2');
+	  renzheng.addEventListener('click', function () {
+	      window.location.href = '../page6/page6.html';
+	  });
+
+	 const yanzheng = document.querySelector('.text_3');
+	  yanzheng.addEventListener('click', function () {
+	      window.location.href = '../page7/page7.html';
+	  });
+
+	 const mainpage = document.querySelector('.image');
+	  mainpage.addEventListener('click', function () {
+	      window.location.href = '../page15/page15.html';
+	  });
 });
