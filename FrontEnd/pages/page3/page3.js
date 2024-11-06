@@ -4,26 +4,49 @@ document.addEventListener('DOMContentLoaded', function() {
         let address;
         let sign;
         let t;
+
+      function handleAccountsChanged(accounts) {
+          web3 = new Web3(window.ethereum);
+          if (accounts.length === 0) {
+            console.log('请连接到MetaMask。');
+          } else {
+            address = accounts[0];
+          }
+       }
+
         const connectToMetaMask = async () => {
-           if (typeof window.ethereum === 'undefined') {
+        if (typeof window.ethereum === 'undefined') {
             console.log('请安装MetaMask钱包扩展');
             return;
-           }
-            try {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                address = accounts[0];
-                web3 = new Web3(window.ethereum);
-                t = Math.floor(Date.now() / 1000);
-                const message = `Trying to login timestamp service, time is ${t}`;
-                sign = await web3.eth.personal.sign(message, address);
-            } catch (err) {
-                if (err.code === 4001) {
-                    console.log('请在MetaMask中授权账户访问');
-                } else {
-                    console.error(err);
-                }
+        }
+        try {
+            console.log('即将请求MetaMask账户访问');
+            await window.ethereum.request({ method: 'eth_requestAccounts' })
+              .then(handleAccountsChanged)
+              .catch((err) => {
+                    if (err.code === 4001) {
+                        console.log('请在MetaMask中授权账户访问');
+                    } else {
+                        console.error(err);
+                    }
+                });
+            t = Math.floor(Date.now() / 1000);
+            const message = `Trying to login timestamp service, time is ${t}`;
+            const msg = web3.utils.utf8ToHex(message);
+            sign = await window.ethereum
+              .request({
+                    method: "personal_sign",
+                    params: [msg, address],
+                });
+        } catch (err) {
+            if (err.code === 4001) {
+                console.log('请在MetaMask中授权账户访问');
+            } else {
+                console.error(err);
             }
-        };
+        }
+    };
+
         const loginWithMeta = async () => {
             try {
                 const response = await fetch('/api/loginWithMeta', {
