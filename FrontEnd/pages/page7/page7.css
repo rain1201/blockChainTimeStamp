@@ -179,6 +179,7 @@
   line-height: 2.15rem;
   font-weight: 600;
   color: #585858;
+  z-index: 1;
 }
 .text_9 {
   line-height: 2.1rem;
@@ -207,6 +208,7 @@
 .image_2 {
   width: 52.88rem;
   height: 39.38rem;
+  z-index: 0;
 }
 .pos {
   position: absolute;
@@ -235,7 +237,4 @@
   font-weight: 600;
   line-height: 2.46rem;
 }
-#paperCanvas {
-    visibility: hidden;
-    opacity: 0;
-}
+

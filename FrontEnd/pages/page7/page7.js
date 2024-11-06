@@ -28,7 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	const update = document.getElementById("update");
 	const getinf = document.getElementById("getinf");
 	const bc = document.getElementById("viewinbc");
-        const canvas = document.getElementById('paperCanvas');
+        const canvas = document.createElement('canvas');
+        canvas.width = 500;
+        canvas.height = 300;
 	fileSelector.addEventListener('change', function() {
 		var fr = new FileReader();
 		fr.onload = function() {
