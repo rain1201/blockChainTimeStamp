@@ -8,29 +8,26 @@
     <link rel="stylesheet" href="../../index.css" />
     <link rel="stylesheet" href="./page6.css" />
     <script type="text/javascript" src="./page6.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.14.0/web3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.5/js.cookie.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha3/0.9.3/sha3.min.js"></script>
   </head>
   <body>
     <div class="flex-col page">
-      <div class="flex-col justify-start section">
+      <div class="flex-col justify-start self-stretch section">
         <div class="flex-row justify-between items-center section_2">
           <span class="text">TrustMark</span>
           <div class="flex-row group">
             <div class="flex-row">
               <div class="flex-col justify-start items-center text-wrapper"><span class="font">首页</span></div>
               <div class="flex-row ml-150">
-                <div class="flex-col justify-start items-center text-wrapper_2">
+                <div class="flex-col justify-start items-center text-wrapper_1">
                   <span class="font text_2">文件认证</span>
                 </div>
                 <div class="flex-col justify-start items-center text-wrapper_2">
                   <span class="font text_3">文件验证</span>
                 </div>
-                <div class="flex-col justify-start items-center text-wrapper_2">
+                <div class="flex-col justify-start items-center text-wrapper_4">
                   <span class="font text_4">联盟成员</span>
                 </div>
-                <div class="flex-col justify-start items-center text-wrapper_2">
+                <div class="flex-col justify-start items-center text-wrapper_5">
                   <span class="font text_5">行业研究</span>
                 </div>
               </div>
@@ -39,26 +36,29 @@
           </div>
         </div>
       </div>
-      <div class="flex-row section_3">
-        <img class="shrink-0 image_2" src="../../images/f6f314ebcf94db90f13b1124ec5100e8.png" />
-        <div class="flex-col flex-1 self-start group_2">
-          <span class="self-center text_6">文件认证</span>
-          <div class="flex-col items-start self-center self-stretch mt-57">
-            <span class="text_7 self-center">本功能可对经可信时间戳认证的数据电文（电子文件）进行数据存证。</span>
-            <div class="mt-40 flex-col self-center section_4">
-              <div class="flex-row items-center self-stretch section_5">
-              <input type="file" id="fs">
-                <img class="shrink-0 image_4" src="../../images/58d69d205ac4f6317e8c9d28e74e990a.png" />
-                <span class="font_2 text_8 ml-45">点击选择需要认证的文件</span>
-                <input id="note">
+      <div class="flex-col justify-start items-start self-start section_4">
+        <div class="flex-row items-start relative section_3">
+          <img class="image_3" src="../../images/ac65b659f475a73c86dd7fb2be91780e.png" />
+          <img class="image_4" src="../../images/2a1695e0a16768c057ebe2e441e7b20d.png" />
+          <div class="flex-col justify-start group_3 pos_1">
+            <div class="flex-row relative group_4">
+              <div class="flex-row items-center section_5 pos_2">
+                <img class="shrink-0 image_2" src="../../images/5ab5d362405f363ff238947dfdde1629.png" />
+                <span class="text_8 ml-45">点击选择需要认证的文件</span>
               </div>
-              <div class="flex-col justify-start items-center self-center text-wrapper_3 mt-205" id="submit">
-                <span class="font_2">获取证书</span>
+               <input type="file" id="fs" style="display: none;">
+               <input class="section_6 pos_3" type="" id="note" placeholder="note">     
+              <span class="font_2 text_9 pos_4">请输入您的备注</span>      
+              <div class="flex-col justify-start items-center text-wrapper_3 pos_5">
+                <span class="font_2 text_10" id="submit">获取证书</span>
               </div>
             </div>
           </div>
         </div>
-        <img class="shrink-0 image_3" src="../../images/03ea57bdd556a9ac78c84c3b32a50548.png" />
+      </div>
+      <div class="flex-col items-start self-end relative group_2">
+        <span class="text_6">文件认证</span>
+        <span class="text_7 mt-37">本功能可对经可信时间戳认证的数据电文（电子文件）进行数据存证。</span>
       </div>
     </div>
   </body>

@@ -145,7 +145,19 @@ function handleAccountsChanged(accounts) {
 	}
 }
 document.addEventListener('DOMContentLoaded', function() {
-	/*const renzheng = document.querySelector('.text_2');
+       var section_5Element = document.querySelector('.section_5');
+       var spanElement = section_5Element.querySelector('span');
+       var fileInput = document.getElementById('fs');
+       fileInput.addEventListener('change', function() {
+           var fileName = this.files[0].name;
+           spanElement.textContent = '已选择文件：' + fileName;
+       });
+          section_5Element.addEventListener('click', function() {
+           fileInput.click();
+       });
+
+
+	const renzheng = document.querySelector('.text_2');
 	  renzheng.addEventListener('click', function () {
 	      window.location.href = '../page6/page6.html';
 	  });
@@ -155,10 +167,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	      window.location.href = '../page7/page7.html';
 	  });
 
-	 const mainpage = document.querySelector('.image_11');
+	 const mainpage = document.querySelector('.image');
 	  mainpage.addEventListener('click', function () {
 	      window.location.href = '../page15/page15.html';
-	  });*/
+	  });
+  
 	uId = parseInt(Cookies.get("userId"));
 	sId = Cookies.get("sessionId");
 	if(isNaN(uId)){sId="anonymous";uId=0;}
@@ -220,6 +233,12 @@ document.addEventListener('DOMContentLoaded', function() {
 								.then(data => {
 									if (data.code === 0) {
 										alert('成功'+rId);
+                                                                                 Cookies.set('recordId', rId);
+                                                                                 Cookies.set('fileHash', fileHash);
+                                                                                 Cookies.set('selfSign',mark.value);
+                                                                                 Cookies.set('txId', dataToSend.txId);
+                                                                                 Cookies.set('timestamp', dataToSend.timestamp);
+                                                                                 window.location.href = '../page8/page8.html';
 									} else {
 										alert(data.msg);
 										console.log(data.msg);
