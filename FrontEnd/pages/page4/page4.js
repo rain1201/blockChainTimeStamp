@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
             let t;
 			function handleAccountsChanged(accounts) {
 	web3 = new Web3(window.ethereum);
-	contract = new web3.eth.Contract(abi, address);
 	if (accounts.length === 0) {
 		console.log('Please connect to MetaMask.');
 	} else {
@@ -26,9 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 
-            address = accounts[0];
             console.log('成功获取MetaMask账户地址：', address);
-            web3 = new Web3(window.ethereum);
             const connectToMetaMask = async () => {
                 if (typeof window.ethereum === 'undefined') {
                     console.log('请安装MetaMask钱包扩展');
