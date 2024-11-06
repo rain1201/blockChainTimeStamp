@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				txId=data.data[0][3].replaceAll("'","");
 				ts=data.data[0][5];
                                 var ctx = canvas.getContext('2d');
+                                ctx.fillStyle = 'white'; 
                                 ctx.font = "25px Arial";
 				if(fileHash!="" && fileHash!=oFileHash){
                                        alert("文件不一致,请查收文件不一致证书");
