@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		fr.readAsText(this.files[0]);
 	});
 	getinf.addEventListener('click', function() {
-		if(rinput.value.length<5){alert("请输入id");return;}
+		if(rinput.value.length<5){swal("请输入id");return;}
 		dataToSend = {
 			userId: uId,
 			sessionId: sId,
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 	});
 	update.addEventListener('click', function() {
-		if(rinput.value.length<5){alert("请输入id");return;}
+		if(rinput.value.length<5){swal("请输入id");return;}
 		dataToSend = {
 			recordId: rinput.value
 		};
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				body: JSON.stringify(dataToSend)
 			})
 			.then(response => response.json())
-			.then(data => {alert(data.msg);});
+			.then(data => {swal(data.msg);});
 	});
 	bc.addEventListener('click', function() {
 		if(txId!=""){window.open("https://sepolia.etherscan.io/tx/"+txId.replaceAll("'",""), "_blank", "resizable,scrollbars,status");}
