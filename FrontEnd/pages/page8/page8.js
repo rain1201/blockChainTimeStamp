@@ -1,10 +1,10 @@
-var recordId = Cookies.get('recordId');
-           var fileHash = Cookies.get('fileHash');
-           var selfSign = Cookies.get('selfSign');
-           var txId = Cookies.get('txId');
-           var timestamp = Cookies.get('timestamp');
+var recordId;
+           var fileHash;
+           var selfSign;
+           var txId;
+           var timestamp;
 
-           var section4 = document.querySelector('.section_4');
+           var section4;
         const addCookieTextToCanvas = () => {
             const cookieValues = [
                 `Record ID: ${recordId}`,
