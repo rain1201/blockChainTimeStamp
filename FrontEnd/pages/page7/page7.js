@@ -55,22 +55,26 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then(response => response.json())
 			.then(data => {
-				if(data.cnt<1){alert("未找到记录，或记录未更新");return;}
+				if(data.cnt<1){swal("未找到记录，或记录未更新");return;}
 				status=data.data[0][4];
 				oFileHash=data.data[0][1].replaceAll("'","");
 				selfSign=data.data[0][2].replaceAll("'","");
 				txId=data.data[0][3].replaceAll("'","");
 				ts=data.data[0][5];
+				swal({
+			        title: '记录信息',
+                    text: '记录ID：'+rinput.value+"\n时间戳："+ts+"\n状态："+status+"\n文件哈希："+oFileHash+"\ntxID："+txId+"\n备注："+selfSign
+                    });
                                 var ctx = canvas.getContext('2d');
                                 ctx.fillStyle = 'white'; 
                                 ctx.font = "25px Arial";
 				if(fileHash!="" && fileHash!=oFileHash){
-                                       alert("文件不一致,请查收文件不一致证书");
+                                       swal("文件不一致");
                                        ctx.fillText("您检验的文件是不一致的 ，请您注意哦" , 20, 20 );
    
                                 }
 				if(fileHash!="" && fileHash==oFileHash){
-                                        alert("文件一致，请查收文件一致证书");
+                                        swal("文件一致，请查收文件一致证书");
                                         ctx.fillText("您检验的文件是一致的 ，恭喜您" , 20, 20 );
                                 }
 				console.log(data.data);
