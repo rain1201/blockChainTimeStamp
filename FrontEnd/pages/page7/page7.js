@@ -94,11 +94,22 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ctx.fillStyle = 'black';
                                 ctx.fillText("Timestamp: " + new Date(ts * 1000).toLocaleString(), 10, 190);
                                 var link = document.createElement('a');
-                                canvas.toBlob(function (blob) {
+                                swal({
+  title: "是否保存信息?",
+  icon: "info",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    canvas.toBlob(function (blob) {
                                    link.href = URL.createObjectURL(blob);
                                    link.download = 'record.jpg';
                                    link.click();
                                }, 'image/jpeg');
+  }
+});
+                                
 			});
 	});
 	update.addEventListener('click', function() {
