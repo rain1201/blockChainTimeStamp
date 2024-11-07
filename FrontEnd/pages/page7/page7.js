@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const getinf = document.getElementById("getinf");
 	const bc = document.getElementById("viewinbc");
         const canvas = document.createElement('canvas');
-        canvas.width = 500;
+        canvas.width = 800;
         canvas.height = 300;
 	fileSelector.addEventListener('change', function() {
 		var fr = new FileReader();
@@ -63,23 +63,30 @@ document.addEventListener('DOMContentLoaded', function() {
 				ts=data.data[0][5];
                                 var ctx = canvas.getContext('2d');
                                 ctx.fillStyle = 'white'; 
-                                ctx.font = "25px Arial";
+                                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                                ctx.font = "25px sans-serif";
 				if(fileHash!="" && fileHash!=oFileHash){
                                        alert("文件不一致,请查收文件不一致证书");
+                                       ctx.fillStyle = 'black';
                                        ctx.fillText("您检验的文件是不一致的 ，请您注意哦" , 20, 20 );
-   
                                 }
 				if(fileHash!="" && fileHash==oFileHash){
                                         alert("文件一致，请查收文件一致证书");
+                                        ctx.fillStyle = 'black';
                                         ctx.fillText("您检验的文件是一致的 ，恭喜您" , 20, 20 );
                                 }
 				console.log(data.data);
-                                ctx.font = "16px Arial";
-                                ctx.fillText("Record ID: " + rinput.value, 10, 50);
-                                ctx.fillText("File Hash: " + oFileHash, 10, 70);
-                                ctx.fillText("Self Sign: " + selfSign, 10, 90);
-                                ctx.fillText("Transaction ID: " + txId, 10, 110);
-                                ctx.fillText("Timestamp: " + new Date(ts * 1000).toLocaleString(), 10, 130);
+                                ctx.font = "16px sans-serif";
+                                ctx.fillStyle = 'black';
+                                ctx.fillText("Record ID: " + rinput.value, 10, 70);
+                                ctx.fillStyle = 'black';
+                                ctx.fillText("File Hash: " + oFileHash, 10, 100);
+                                ctx.fillStyle = 'black';
+                                ctx.fillText("Self Sign: " + selfSign, 10, 130);
+                                ctx.fillStyle = 'black';
+                                ctx.fillText("Transaction ID: " + txId, 10, 160);
+                                ctx.fillStyle = 'black';
+                                ctx.fillText("Timestamp: " + new Date(ts * 1000).toLocaleString(), 10, 190);
                                 var link = document.createElement('a');
                                 canvas.toBlob(function (blob) {
                                    link.href = URL.createObjectURL(blob);
