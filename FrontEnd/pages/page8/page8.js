@@ -1,4 +1,10 @@
+var recordId = Cookies.get('recordId');
+           var fileHash = Cookies.get('fileHash');
+           var selfSign = Cookies.get('selfSign');
+           var txId = Cookies.get('txId');
+           var timestamp = Cookies.get('timestamp');
 
+           var section4 = document.querySelector('.section_4');
         const addCookieTextToCanvas = () => {
             const cookieValues = [
                 `Record ID: ${recordId}`,
@@ -73,11 +79,11 @@
         };
 
 document.addEventListener('DOMContentLoaded', function() {
-           const recordId = Cookies.get('recordId');
-           const fileHash = Cookies.get('fileHash');
-           const selfSign = Cookies.get('selfSign');
-           const txId = Cookies.get('txId');
-           const timestamp = Cookies.get('timestamp');
+           recordId = Cookies.get('recordId');
+           fileHash = Cookies.get('fileHash');
+           selfSign = Cookies.get('selfSign');
+           txId = Cookies.get('txId');
+           timestamp = Cookies.get('timestamp');
 
            const section4 = document.querySelector('.section_4');
   
