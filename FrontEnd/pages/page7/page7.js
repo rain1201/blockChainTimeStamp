@@ -61,11 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				selfSign=data.data[0][2].replaceAll("'","");
 				txId=data.data[0][3].replaceAll("'","");
 				ts=data.data[0][5];
-				swal({
-			        title: '记录信息',
-                    text: '记录ID：'+rinput.value+"\n时间戳："+ts+"\n状态："+status+"\n文件哈希："+oFileHash+"\ntxID："+txId+"\n备注："+selfSign
-                    });
-                                var ctx = canvas.getContext('2d');
+				var ctx = canvas.getContext('2d');
                                 ctx.fillStyle = 'white'; 
                                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                                 ctx.font = "25px sans-serif";
@@ -94,6 +90,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ctx.fillStyle = 'black';
                                 ctx.fillText("Timestamp: " + new Date(ts * 1000).toLocaleString(), 10, 190);
                                 var link = document.createElement('a');
+				swal({
+			        title: '记录信息',
+                    text: '记录ID：'+rinput.value+"\n时间戳："+ts+"\n状态："+status+"\n文件哈希："+oFileHash+"\ntxID："+txId+"\n备注："+selfSign
+                    }).then((value) => {
+                                
                                 swal({
   title: "是否保存信息?",
   icon: "info",
@@ -108,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                    link.click();
                                }, 'image/jpeg');
   }
-});
+});});
                                 
 			});
 	});
