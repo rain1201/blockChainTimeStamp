@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
            txId = Cookies.get('txId');
            timestamp = Cookies.get('timestamp');
 
-           const section4 = document.querySelector('.section_4');
+           section4 = document.querySelector('.section_4');
   
            
             addCookieTextToCanvas();
