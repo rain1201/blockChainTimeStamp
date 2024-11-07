@@ -114,6 +114,7 @@ def signup():
     rd.delete(email+"EmailCaptcha")
     cnt=cursor.execute('INSERT INTO users (email, password, username) VALUES ("%s", "%s", "%s");',[email,password,username])
     db.commit()
+    cursor.close()
     if(cnt==1):return jsonify({"code":0,"msg":"成功"})
     else:return jsonify({"code":4,"msg":"创建用户失败"})
 @app.route("/api/resetPassword",methods=["post"])
@@ -130,6 +131,7 @@ def resetPassword():
     if(not rd.exists(email+"EmailCaptcha") or rd.get(email+"EmailCaptcha")!=captcha):return jsonify({"code":3,"msg":"验证码错误"})
     cnt=cursor.execute('UPDATE users SET password="%s" WHERE email="%s";',[password,email])
     db.commit()
+    cursor.close()
     if(cnt==1):return jsonify({"code":0,"msg":"成功"})
     else:return jsonify({"code":4,"msg":"修改密码失败"})
 @app.route("/api/loginWithMeta",methods=["post"])
@@ -158,6 +160,7 @@ def loginWithMeta():
             rd.setex(str(newSessionId)+"sessionId",86400,userInf[0])
             #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
+    cursor.close()
     return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId})
 @app.route("/api/generateRecordID",methods=["post"])
 def generateRecordID():
@@ -205,6 +208,7 @@ def setEthAddress():
         return jsonify({"code":6,"msg":"签名错误"})
     cnt=cursor.execute('UPDATE users SET ethAddress="%s" WHERE id=%s;',[address,userId])
     db.commit()
+    cursor.close()
     return jsonify({"code":0,"msg":"成功"})
 @app.route("/api/uploadRecord",methods=["post"])
 def uploadRecord():
@@ -227,6 +231,7 @@ def uploadRecord():
                    [recordId, fileHash, selfSign, txId,userId])
     db.commit()
     rd.delete(str(recordId)+"RecordId")
+    cursor.close()
     return jsonify({"code":cnt-1,"msg":"完成"})
 @app.route("/api/queryUserRecords",methods=["post"])
 def queryUserRecords():
@@ -262,6 +267,7 @@ def querySingleRecords():
     'FROM records WHERE recordId="%s" AND (status=3 OR status=4);',[recordId])
     ret={"code":0,"count":cnt,"data":[]}
     for _ in range(cnt):ret["data"].append(cursor.fetchone())
+    cursor.close()
     return jsonify(ret)
 @app.route("/api/updateRecord",methods=["post"])
 def updateRecord():

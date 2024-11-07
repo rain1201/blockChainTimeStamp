@@ -25,7 +25,7 @@
 					showConfirmButton: false,
 					timer: 1500
 				});
-                        alert('验证码已发送，请查收邮件');
+                        //alert('验证码已发送，请查收邮件');
                         text_13.textContent = '已发送';
                         text_13.classList.add('changed');
                         setTimeout(function () {
