@@ -60,11 +60,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     const data = await response.json();
                     if (data.code === 0) {
-                        alert('绑定metamask成功');
+                    Swal.fire({
+					position: 'top-end',
+					icon: 'success',
+					title: '绑定metamask成功',
+					showConfirmButton: false,
+					timer: 1500
+				});
+                        //alert('绑定metamask成功');
                         window.location.href = '../page5/page5.html';
                         console.log('设置以太坊地址成功');
                     } else {
-                        alert(data.msg);
+                    Swal.fire({
+					position: 'top-end',
+					icon: 'error',
+					title: data.msg,
+					showConfirmButton: false,
+					timer: 1500
+				});
+                        //alert(data.msg);
                         console.log(data.msg);
                     }
                 } catch (err) {

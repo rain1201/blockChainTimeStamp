@@ -62,7 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 const data = await response.json();
                 if (data.code === 0) {
-                    alert('登录成功');
+					Swal.fire({
+					position: 'top-end',
+					icon: 'success',
+					title: '登录成功',
+					showConfirmButton: false,
+					timer: 1500
+				});
+                    //alert('登录成功');
                     const userId = data.userId;
                     const sessionId = data.sessionId;
                     Cookies.set('userId', userId);
@@ -70,7 +77,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log('登录成功，用户ID：', data.userId, '，会话ID：', data.sessionId);
                     window.location.href = '../page5/page5.html';
                 } else {
-                    alert(data.msg);
+                Swal.fire({
+					position: 'top-end',
+					icon: 'error',
+					title: data.msg,
+					showConfirmButton: false,
+					timer: 1500
+				});
+                    //alert(data.msg);
                     console.log(data.msg);
                 }
             } catch (err) {

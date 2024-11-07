@@ -18,6 +18,13 @@
                 })
              .then(function (response) {
                     if (response.code === 0) {
+                    Swal.fire({
+					position: 'top-end',
+					icon: 'success',
+					title: '验证码已发送，请查收邮件',
+					showConfirmButton: false,
+					timer: 1500
+				});
                         alert('验证码已发送，请查收邮件');
                         text_13.textContent = '已发送';
                         text_13.classList.add('changed');
@@ -27,7 +34,14 @@
                             textWrapper5.classList.remove('changed');
                         }, 60000);
                     } else {
-                        alert(response.msg);
+						Swal.fire({
+					position: 'top-end',
+					icon: 'error',
+					title: response.msg,
+					showConfirmButton: false,
+					timer: 1500
+				});
+                        //alert(response.msg);
                     }
                     textWrapper5.classList.remove('changed');
                 })
@@ -61,16 +75,37 @@
                         const data = await response.json();
 
                         if (response.code === 0) {
-                            alert('注册成功');
+							Swal.fire({
+								position: 'top-end',
+								icon: 'success',
+								title: '注册成功',
+								showConfirmButton: false,
+								timer: 1500
+							});
+                            //alert('注册成功');
                             window.location.href = '../page2/page2.html';
                         } else {
-                            alert(data.msg);
+                        Swal.fire({
+					position: 'top-end',
+					icon: 'error',
+					title: data.msg,
+					showConfirmButton: false,
+					timer: 1500
+				});
+                            //alert(data.msg);
                         }
                     } catch (error) {
                         console.log('注册请求出错：', error);
                     }
                 } else {
-                    alert('请阅读并同意使用协议/隐私协议');
+                Swal.fire({
+					position: 'top-end',
+					icon: 'error',
+					title: '请阅读并同意使用协议/隐私协议',
+					showConfirmButton: false,
+					timer: 1500
+				});
+                    //alert('请阅读并同意使用协议/隐私协议');
                 }
             });
 

@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		fr.readAsText(this.files[0]);
 	});
 	submit.addEventListener('click', function() {
-		if(fileHash==""){alert("请选择文件");return;}
+		if(fileHash==""){swal("请选择文件");return;}
 		var dataToSend = {
 			userId: uId,
 			sessionId: sId
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							value: 100
 						})
 						.on('error', function(error, receipt) {
-							alert(error, receipt);
+							swal(error, receipt);
 							return;
 						})
 						.on('receipt', (data) => {
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
 								.then(response => response.json())
 								.then(data => {
 									if (data.code === 0) {
-										alert('成功'+rId);
+										swal('成功'+rId);
                                                                                  Cookies.set('recordId', rId);
                                                                                  Cookies.set('fileHash', fileHash);
                                                                                  Cookies.set('selfSign',mark.value);
@@ -240,13 +240,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                                                                  Cookies.set('timestamp', dataToSend.timestamp);
                                                                                  window.location.href = '../page8/page8.html';
 									} else {
-										alert(data.msg);
+										swal(data.msg);
 										console.log(data.msg);
 									}
 								})
 						});
 				} else {
-					alert(data.msg);
+					swal(data.msg);
 					console.log(data.msg);
 				}
 			})
