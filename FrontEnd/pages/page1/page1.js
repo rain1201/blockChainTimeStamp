@@ -74,7 +74,7 @@
                         });
                         const data = await response.json();
 
-                        if (response.code === 0) {
+                        if (data.code === 0) {
 							Swal.fire({
 								position: 'top-end',
 								icon: 'success',
