@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const counttext = document.querySelector('.font_4');
     const renzheng = document.querySelector('.text_13');
     
-    const dataToSend = {
+    var dataToSend = {
         userId: userId,
         sessionId: sessionId
       };
@@ -100,12 +100,31 @@ document.addEventListener('DOMContentLoaded', function () {
                               row.className = 'record-row';
                               row.textContent = `${record[0]}`;
                               row.addEventListener('click', function () {
-                                // 点击行时弹出包含具体数据信息的提示框
-                                Swal.fire({
-                                 ...sweetAlertConfig,
-                                  title: `记录 ${index + 1} 详细信息`,
-                                  html: `<p>记录ID: ${record[0]}</p><p>文件哈希: ${record[1]}</p>`,
-                                });
+									dataToSend = {
+										userId: userId,
+										sessionId: sessionId,
+										recordId: record[0].replaceAll("'","")
+									};
+									fetch('/api/querySingleRecordsDetail', {
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json'
+										},
+										body: JSON.stringify(dataToSend)
+										}).then(response => response.json())
+									.then(data => {
+										status=data.data[0][4];
+										if(data.cnt<1){Swal.fire("未找到记录，或记录未更新");return;}
+										status=data.data[0][4];
+										oFileHash=data.data[0][1].replaceAll("'","");
+										selfSign=data.data[0][2].replaceAll("'","");
+										txId=data.data[0][3].replaceAll("'","");
+										ts=data.data[0][5];
+										Swal.fire({
+											title: '记录信息',
+											text: '记录ID：'+record[0].replaceAll("'","")+"\n时间戳："+ts+"\n状态："+status+"\n文件哈希："+oFileHash+"\ntxID："+txId+"\n备注："+selfSign
+										});
+									});
                               });
         
                               content.appendChild(row);
