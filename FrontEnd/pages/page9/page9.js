@@ -1,0 +1,100 @@
+document.addEventListener('DOMContentLoaded', function () {
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let baseImage;
+    let stickerImage;
+    let stickerX = 0;
+    let stickerY = 0;
+    let stickerScale = 1;
+    let isDragging = false;
+    let startX, startY;
+    const stickerImageInput = document.getElementById('stickerImageInput');
+    const mergeButton = document.getElementById('mergeButton');
+    const backimage = new Image();
+    
+
+       backimage.src = '../../images/0.png';
+       backimage.onload = function () {
+        ctx.drawImage(backimage, 0, 0, canvas.width, canvas.height);
+       };
+    
+
+    
+    stickerImageInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const img = new Image();
+            img.onload = function () {
+                stickerImage = img;
+            };
+            img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+    canvas.addEventListener('mousedown', function (e) {
+        if (stickerImage) {
+            isDragging = true;
+            startX = e.clientX - stickerX;
+            startY = e.clientY - stickerY;
+        }
+    });
+    canvas.addEventListener('mousemove', function (e) {
+        if (isDragging && stickerImage) {
+            stickerX = e.clientX - startX;
+            stickerY = e.clientY - startY;
+            draw();
+        }
+    });
+    canvas.addEventListener('mouseup', function () {
+        isDragging = false;
+    });
+    canvas.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        const scaleFactor = e.deltaY < 0? 1.1 : 0.9;
+        stickerScale *= scaleFactor;
+        draw();
+    });
+    
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        backimage.src = '../../images/0.png';
+        backimage.onload = function () {
+        ctx.drawImage(backimage, 0, 0, canvas.width, canvas.height);
+        if (stickerImage) {
+            const scaledWidth = stickerImage.width * stickerScale;
+            const scaledHeight = stickerImage.height * stickerScale;
+            ctx.drawImage(stickerImage, stickerX, stickerY, scaledWidth, scaledHeight);
+        }
+       };     
+    } 
+    mergeButton.addEventListener('click', function () {
+        if (backimage && stickerImage) {
+            const mergedCanvas = document.createElement('canvas');
+            const mergedCtx = mergedCanvas.getContext('2d');
+            mergedCanvas.width = canvas.width;
+            mergedCanvas.height = canvas.height;
+
+            mergedCtx.drawImage(backimage, 0, 0, canvas.width, canvas.height);
+            const scaledWidth = stickerImage.width * stickerScale;
+            const scaledHeight = stickerImage.height * stickerScale;
+            mergedCtx.drawImage(stickerImage, stickerX, stickerY, scaledWidth, scaledHeight);
+
+            const link = document.createElement('a');
+            link.href = mergedCanvas.toDataURL('image/png');
+            link.download = '证书.png';
+            link.click();
+        }
+    });   
+
+    var main = document.querySelector('.text_4');
+    main.addEventListener('click', function () {
+        window.location.href = '../page5/page5.html';
+      });
+
+    
+});

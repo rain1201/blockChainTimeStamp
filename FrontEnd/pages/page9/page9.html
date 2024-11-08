@@ -13,6 +13,7 @@
     <div class="flex-col relative page">
       <div class="flex-col justify-start items-center self-stretch relative">
         <img class="image" src="../../images/9c47aa7fff2301c69ac8a990304f5509.png" />
+        <canvas id="canvas" width="600" height="860"></canvas>
         <div class="flex-row justify-between items-center section pos">
           <div class="flex-row items-center section_5">
             <img class="image_2" src="../../images/198e371b1155324fa62a371cd53b1e55.png" />
@@ -43,7 +44,7 @@
               </div>
             </div>
             <img class="shrink-0 image_4" src="../../images/30676d7204073333d2be22ca8234bb25.png" />
-            <img class="shrink-0 image_5" src="../../images/2531009fc37eacb73976f1fd363badb6.png" />
+            <img class="shrink-0 image_5" id='mergeButton' src="../../images/2531009fc37eacb73976f1fd363badb6.png" />
             <span class="text_4">首页</span>
           </div>
         </div>
@@ -52,7 +53,10 @@
       <div class="flex-col section_6 pos_2">
         <div class="flex-row justify-between items-center section_7">
           <img class="image_7" src="../../images/770ca7644f9e4198d5921175700cf16f.png" />
-          <img class="image_6" src="../../images/cb13a35e0d4cff86b6ecc3bda12c903a.png" />
+          <div class="parent-container">
+            <img class="image_6" src="../../images/cb13a35e0d4cff86b6ecc3bda12c903a.png" />
+            <input class="image_6 hidden" type="file" id="stickerImageInput" accept="image/*">
+          </div>
         </div>
         <div class="flex-col group_2">
           <div class="flex-col justify-start relative group_3">
@@ -66,7 +70,7 @@
               <img class="shrink-0 grid-item" src="../../images/6bfe7c741cabb16e6ac15582efeca9fb.png" />
               <img class="shrink-0 grid-item" src="../../images/6dd24fbbaf8261b8966c829dd1c5c0cf.png" />
               <img class="shrink-0 grid-item" src="../../images/3c7478c70208e9de525544f987a5e075.png" />
-              <img class="shrink-0 grid-item" src="../../images/e0cde003b8015ae824f0e32cfb1e3982.png" />
+              <img class="shrink-0 grid-item" id='image_11' src="../../images/e0cde003b8015ae824f0e32cfb1e3982.png" />
               <img class="shrink-0 grid-item" src="../../images/9035058b56b0a22eea1b442949801362.png" />
               <div class="shrink-0 grid-item_2"></div>
             </div>
