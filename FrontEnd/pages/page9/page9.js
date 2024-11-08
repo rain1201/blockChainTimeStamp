@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
        };
     
 
-    const imgchang=document.getElementById('.image_11');
+    const imgchang=document.getElementById('image_11');
     imgchang.addEventListener('click', function (){
         stickerImage="../../images/c45b10d9dde04257ed7d2948e1e8e2f7.png";
     });
