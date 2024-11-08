@@ -12,11 +12,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const stickerImageInput = document.getElementById('stickerImageInput');
     const mergeButton = document.getElementById('mergeButton');
     const backimage = new Image();
+    var recordId = Cookies.get('recordId');
+    var fileHash = Cookies.get('fileHash');
+    var selfSign = Cookies.get('selfSign');
+    var txId = Cookies.get('txId');
+    var timestamp = Cookies.get('timestamp');
     
 
        backimage.src = '../../images/0.png';
        backimage.onload = function () {
         ctx.drawImage(backimage, 0, 0, canvas.width, canvas.height);
+        ctx.font = "12px sans-serif";
+        ctx.fillStyle = 'black';
+        ctx.fillText(recordId, 180, 385);
+        ctx.fillStyle = 'black';
+        ctx.font = "9px sans-serif";
+        ctx.fillText(fileHash, 200, 440);
+        ctx.font = "12px sans-serif";
+        ctx.fillStyle = 'black';
+        ctx.fillText(selfSign, 170, 490);
+        ctx.fillStyle = 'black';
+        ctx.font = "10px sans-serif";
+        ctx.fillText(txId, 160, 545);
+        ctx.fillStyle = 'black';
+        ctx.font = "12px sans-serif";
+        ctx.fillText(timestamp, 180, 595);
        };
     
 
@@ -65,6 +85,21 @@ document.addEventListener('DOMContentLoaded', function () {
         backimage.src = '../../images/0.png';
         backimage.onload = function () {
         ctx.drawImage(backimage, 0, 0, canvas.width, canvas.height);
+        ctx.font = "12px sans-serif";
+        ctx.fillStyle = 'black';
+        ctx.fillText(recordId, 180, 385);
+        ctx.fillStyle = 'black';
+        ctx.font = "9px sans-serif";
+        ctx.fillText(fileHash, 200, 440);
+        ctx.font = "12px sans-serif";
+        ctx.fillStyle = 'black';
+        ctx.fillText(selfSign, 170, 490);
+        ctx.fillStyle = 'black';
+        ctx.font = "10px sans-serif";
+        ctx.fillText(txId, 160, 545);
+        ctx.fillStyle = 'black';
+        ctx.font = "12px sans-serif";
+        ctx.fillText(timestamp, 180, 595);
         if (stickerImage) {
             const scaledWidth = stickerImage.width * stickerScale;
             const scaledHeight = stickerImage.height * stickerScale;
