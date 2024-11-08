@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', function () {
 										status=data.data[0][4];
 										if(status=="1"||status==1){
 											Swal.fire({
-													title: ,
+													title: "未找到记录，或记录未更新，是否更新？",
 													icon: "info",
 													buttons: true,
-													dangerMode: true,
+													dangerMode: true
 											}).then((ret)=>{
 											if(!ret){return;}
 												dataToSend = {
