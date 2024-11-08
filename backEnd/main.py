@@ -147,7 +147,7 @@ def loginWithMeta():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    userCount=cursor.execute('SELECT id FROM users WHERE ethAddress="%s";',address)
+    userCount=cursor.execute('SELECT id,username FROM users WHERE ethAddress="%s";',address)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
@@ -161,7 +161,7 @@ def loginWithMeta():
             #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
     cursor.close()
-    return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId})
+    return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId,"username":userInf[1]})
 @app.route("/api/generateRecordID",methods=["post"])
 def generateRecordID():
     userId=request.json.get("userId")

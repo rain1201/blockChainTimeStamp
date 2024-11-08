@@ -72,6 +72,7 @@
  + `address`: Meta地址
  + `sign`: 签名("Trying to login timestamp service, time is {TIMESTAMP}")
  + `t`: 时间戳
+ + `username`: 用户名
 * **返回值**:
  + `code`: 状态码（0：成功，1：参数过少，2：请求超时，3：未找到用户，4：用户数量错误，5：密码错误）
  + `msg`: 状态信息
