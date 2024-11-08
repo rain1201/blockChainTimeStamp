@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
             mergedCtx.fillStyle = 'black';
             mergedCtx.font = "9px sans-serif";
             mergedCtx.fillText(fileHash, 200, 440);
-            mergedCtxx.font = "12px sans-serif";
+            mergedCtx.font = "12px sans-serif";
             mergedCtx.fillStyle = 'black';
             mergedCtx.fillText(selfSign, 170, 490);
             mergedCtx.fillStyle = 'black';
