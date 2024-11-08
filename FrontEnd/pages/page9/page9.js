@@ -115,6 +115,21 @@ document.addEventListener('DOMContentLoaded', function () {
             mergedCanvas.height = canvas.height;
 
             mergedCtx.drawImage(backimage, 0, 0, canvas.width, canvas.height);
+            ctx.font = "12px sans-serif";
+            ctx.fillStyle = 'black';
+            ctx.fillText(recordId, 180, 385);
+            ctx.fillStyle = 'black';
+            ctx.font = "9px sans-serif";
+            ctx.fillText(fileHash, 200, 440);
+            ctx.font = "12px sans-serif";
+            ctx.fillStyle = 'black';
+            ctx.fillText(selfSign, 170, 490);
+            ctx.fillStyle = 'black';
+            ctx.font = "10px sans-serif";
+            ctx.fillText(txId, 160, 545);
+            ctx.fillStyle = 'black';
+            ctx.font = "12px sans-serif";
+            ctx.fillText(timestamp, 180, 595);
             const scaledWidth = stickerImage.width * stickerScale;
             const scaledHeight = stickerImage.height * stickerScale;
             mergedCtx.drawImage(stickerImage, stickerX, stickerY, scaledWidth, scaledHeight);
