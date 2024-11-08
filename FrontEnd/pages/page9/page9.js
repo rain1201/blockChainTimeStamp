@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    let baseImage;
     let stickerImage;
     let stickerX = 0;
     let stickerY = 0;
@@ -40,7 +39,11 @@ document.addEventListener('DOMContentLoaded', function () {
        };
     
 
-    
+    const imachang=document.getElementById('.image_11');
+    imgchang.addEventListener('click', function (){
+        stickerImage="../../images/c45b10d9dde04257ed7d2948e1e8e2f7.png";
+    });
+
     stickerImageInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
         const reader = new FileReader();
