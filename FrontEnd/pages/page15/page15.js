@@ -90,14 +90,14 @@ document.addEventListener('DOMContentLoaded', function () {
                          ...sweetAlertConfig,
                           title: '用户记录查询结果',
                           html: `<p>共查询到 ${count} 条记录，点击每行可查看具体信息。</p>`,
-                          onBeforeOpen: function () {
+                          didOpen: function () {
                             const popup = Swal.getPopup();
-                            const content = popup.querySelector('.swal2-content');
+                            const content = popup.querySelector('.swal2-html-container');
         
                             data.forEach((record, index) => {
                               const row = document.createElement('div');
                               row.className = 'record-row';
-                              row.textContent = `记录 ${index + 1}`;
+                              row.textContent = `${record[0]}`;
                               row.addEventListener('click', function () {
                                 // 点击行时弹出包含具体数据信息的提示框
                                 Swal.fire({
