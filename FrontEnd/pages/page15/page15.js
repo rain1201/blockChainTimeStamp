@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const userId = Cookies.get('userId');
+    const userName = Cookies.get('username');
     const sessionId = Cookies.get('sessionId');
     const counttext = document.querySelector('.font_4');
     const renzheng = document.querySelector('.text_13');
@@ -33,11 +34,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const name = Cookies.get('name');  
     var name0 = document.querySelector('.text_7');
     if (name0) {
-      name0.textContent = '昵称： '+userId ;
+      name0.textContent = '昵称： '+userName ;
     }
     var name1 = document.querySelector('.text_2');
     if (name1) {
-      name1.textContent = 'Hello'+ userId +'!';
+      name1.textContent = 'Hello'+ userName +'!';
     }
 
     renzheng.addEventListener('click', function () {
