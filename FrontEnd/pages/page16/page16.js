@@ -59,10 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
         emailtext.textContent =  email;
       }
     
-    var passwardtext = document.querySelector('.text_13');
-    if (passwardtext) {
-        passwardtext.textContent =  '*******';
-      }
 
     const  person= document.querySelector('.text_5');
     person.addEventListener('click', function () {
