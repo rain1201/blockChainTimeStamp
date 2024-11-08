@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 			.then(response => response.json())
 			.then(data => {
-				if(data.cnt<1){swal("未找到记录，或记录未更新");return;}
+				if(data.count<1){swal("未找到记录，或记录未更新");return;}
 				status=data.data[0][4];
 				oFileHash=data.data[0][1].replaceAll("'","");
 				selfSign=data.data[0][2].replaceAll("'","");
