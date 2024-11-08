@@ -114,7 +114,28 @@ document.addEventListener('DOMContentLoaded', function () {
 										}).then(response => response.json())
 									.then(data => {
 										status=data.data[0][4];
-										if(data.cnt<1){Swal.fire("未找到记录，或记录未更新");return;}
+										if(status=="1"||status==1){
+											Swal.fire({
+													title: ,
+													icon: "info",
+													buttons: true,
+													dangerMode: true,
+											}).then((ret)=>{
+											if(!ret){return;}
+												dataToSend = {
+												recordId: record[0].replaceAll("'","")
+												};
+											fetch('/api/updateRecord', {
+													method: 'POST',
+													headers: {
+														'Content-Type': 'application/json'
+													},
+													body: JSON.stringify(dataToSend)
+												})
+												.then(response => response.json())
+												.then(data => {Swal.fire(data.msg);});
+											});
+										}
 										status=data.data[0][4];
 										oFileHash=data.data[0][1].replaceAll("'","");
 										selfSign=data.data[0][2].replaceAll("'","");
@@ -122,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
 										ts=data.data[0][5];
 										Swal.fire({
 											title: '记录信息',
-											text: '记录ID：'+record[0].replaceAll("'","")+"\n时间戳："+ts+"\n状态："+status+"\n文件哈希："+oFileHash+"\ntxID："+txId+"\n备注："+selfSign
+											html: '记录ID：'+record[0].replaceAll("'","")+"\n时间戳："+ts+"\n状态："+status+"\n文件哈希："+oFileHash+"\ntxID："+txId+"\n备注："+selfSign
 										});
 									});
                               });
