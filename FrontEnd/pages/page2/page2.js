@@ -35,9 +35,11 @@ document.addEventListener('DOMContentLoaded', function () {
 				});
                   const userId = data.userId;
                   const sessionId = data.sessionId;
+                  const name = data.username;
                   Cookies.set('userId', userId);
                   Cookies.set('sessionId', sessionId);
                   Cookies.set('email',emailInput);
+                  Cookies.set('name',name);
                 if(data.hasEthAddress<20){
                   window.location.href = '../page4/page4.html';
                 }else  window.location.href = '../page5/page5.html';
