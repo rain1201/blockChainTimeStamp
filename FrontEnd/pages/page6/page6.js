@@ -213,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						})
 						.on('receipt', (data) => {
 							console.log(data);
+							web3.eth.getBlock(data.blockNumber).then((data)=>{Cookies.set('timestamp',data.timestamp.toString());});
 							dataToSend = {
 								recordId: rId,
 								txId: data.transactionHash,
@@ -237,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                                                  Cookies.set('fileHash', fileHash);
                                                                                  Cookies.set('selfSign',mark.value);
                                                                                  Cookies.set('txId', dataToSend.txId);
-                                                                                 Cookies.set('timestamp', dataToSend.timestamp);
+                                                                                 //Cookies.set('timestamp', dataToSend.timestamp);
                                                                                  window.location.href = '../page8/page8.html';
 									} else {
 										swal(data.msg);
