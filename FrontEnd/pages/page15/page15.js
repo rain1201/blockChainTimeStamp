@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     var name1 = document.querySelector('.text_2');
     if (name1) {
-      name1.textContent = 'Hello'+ userName +'!';
+      name1.textContent = 'Hello '+ userName +'!';
     }
 
     renzheng.addEventListener('click', function () {
