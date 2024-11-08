@@ -1,4 +1,4 @@
- const login = document.querySelector('.text');
+ const login = document.getElementById('login');
             login.addEventListener('click', function () {
                 window.location.href = '../page2/page2.html';
             });
