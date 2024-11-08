@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const userId = Cookies.get('userId');
-    const userName = Cookies.get('username');
+    const userName = Cookies.get('name');
     const sessionId = Cookies.get('sessionId');
     const counttext = document.querySelector('.font_4');
     const renzheng = document.querySelector('.text_13');
