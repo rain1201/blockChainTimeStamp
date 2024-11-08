@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    Cookie.set('name',name);
+                    Cookies.set('name',name);
                     //alert('注册成功');
                     window.location.href = '../page2/page2.html';
                 } else {
