@@ -57,7 +57,7 @@ def login():
     db.ping(reconnect=True) 
     cursor = db.cursor()
     userCount=0
-    if("@" in username): userCount=cursor.execute('SELECT id,password,ethAddress FROM users WHERE email="%s";',username)
+    if("@" in username): userCount=cursor.execute('SELECT id,password,ethAddress,username FROM users WHERE email="%s";',username)
     #else:userCount=cursor.execute("SELECT * FROM users WHERE username=%s",username)
     if(userCount==0):return jsonify({"code":3,"msg":"未找到用户"})
     if(userCount>1):return jsonify({"code":4,"msg":"用户数量错误"})
@@ -70,7 +70,7 @@ def login():
             #rd.sadd(str(userInf[0])+"sessionList",newSessionId)
             break
     cursor.close()
-    return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId,"hasEthAddress":len(str(userInf[2]))})
+    return jsonify({"code":0,"msg":"成功","userId":userInf[0],"sessionId":newSessionId,"hasEthAddress":len(str(userInf[2])),"username":userInf[3]})
 """
 @app.route("/api/logoutAll",methods=["post"])
 def logoutAll():

@@ -26,6 +26,7 @@
  + `userId`: 用户ID
  + `sessionId`: 会话ID
  + `hasEthAddress`: 用户是否绑定metamask，未绑定为0
+ + `username`: 用户名
 
 ### 3. 登出
 
