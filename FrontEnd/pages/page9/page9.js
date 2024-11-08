@@ -113,29 +113,29 @@ document.addEventListener('DOMContentLoaded', function () {
             const mergedCtx = mergedCanvas.getContext('2d');
             mergedCanvas.width = canvas.width;
             mergedCanvas.height = canvas.height;
-
+               
             mergedCtx.drawImage(backimage, 0, 0, canvas.width, canvas.height);
-            ctx.font = "12px sans-serif";
-            ctx.fillStyle = 'black';
-            ctx.fillText(recordId, 180, 385);
-            ctx.fillStyle = 'black';
-            ctx.font = "9px sans-serif";
-            ctx.fillText(fileHash, 200, 440);
-            ctx.font = "12px sans-serif";
-            ctx.fillStyle = 'black';
-            ctx.fillText(selfSign, 170, 490);
-            ctx.fillStyle = 'black';
-            ctx.font = "10px sans-serif";
-            ctx.fillText(txId, 160, 545);
-            ctx.fillStyle = 'black';
-            ctx.font = "12px sans-serif";
-            ctx.fillText(timestamp, 180, 595);
+            mergedCtx.font = "12px sans-serif";
+            mergedCtx.fillStyle = 'black';
+            mergedCtx.fillText(recordId, 180, 385);
+            mergedCtx.fillStyle = 'black';
+            mergedCtx.font = "9px sans-serif";
+            mergedCtx.fillText(fileHash, 200, 440);
+            mergedCtxx.font = "12px sans-serif";
+            mergedCtx.fillStyle = 'black';
+            mergedCtx.fillText(selfSign, 170, 490);
+            mergedCtx.fillStyle = 'black';
+            mergedCtx.font = "10px sans-serif";
+            mergedCtx.fillText(txId, 160, 545);
+            mergedCtx.fillStyle = 'black';
+            mergedCtx.font = "12px sans-serif";
+            mergedCtx.fillText(timestamp, 180, 595);
             const scaledWidth = stickerImage.width * stickerScale;
             const scaledHeight = stickerImage.height * stickerScale;
             mergedCtx.drawImage(stickerImage, stickerX, stickerY, scaledWidth, scaledHeight);
 
             const link = document.createElement('a');
-            link.href = mergedCanvas.toDataURL('image/png');
+            link.href = mergedCanvas.toDataURL();
             link.download = '证书.png';
             link.click();
         }
