@@ -29,10 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(function (error) {
           console.error('查询记录出错:', error);
         });
-
-    var name = document.querySelector('.text_7');
-    if (name) {
-      name.textContent = '昵称： '+userId ;
+    
+    const name = Cookies.get('name');  
+    var name0 = document.querySelector('.text_7');
+    if (name0) {
+      name0.textContent = '昵称： '+userId ;
     }
     var name1 = document.querySelector('.text_2');
     if (name1) {
