@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
             mergedCtx.drawImage(stickerImage, stickerX, stickerY, scaledWidth, scaledHeight);
 
             const link = document.createElement('a');
-            link.href = mergedCanvas.toDataURL('image/png');
+            link.href = mergedCanvas.toDataURL();
             link.download = '证书.png';
             link.click();
         }
