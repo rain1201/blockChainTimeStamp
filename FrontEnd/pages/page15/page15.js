@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
 										ts=data.data[0][5];
 										Swal.fire({
 											title: '记录信息',
-											html: '记录ID：'+record[0].replaceAll("'","")+"\n时间戳："+ts+"\n状态："+status+"\n文件哈希："+oFileHash+"\ntxID："+txId+"\n备注："+selfSign
+											html: '记录ID：'+record[0].replaceAll("'","")+"<br>时间戳："+ts+"<br>状态："+status+"<br>文件哈希："+oFileHash+"<br>txID："+txId+"<br>备注："+selfSign
 										});
 									});
                               });
