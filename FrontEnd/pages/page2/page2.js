@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   const sessionId = data.sessionId;
                   Cookies.set('userId', userId);
                   Cookies.set('sessionId', sessionId);
+                  Cookies.set('email',emailInput);
                 if(data.hasEthAddress<20){
                   window.location.href = '../page4/page4.html';
                 }else  window.location.href = '../page5/page5.html';
