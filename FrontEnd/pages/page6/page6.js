@@ -233,13 +233,13 @@ document.addEventListener('DOMContentLoaded', function() {
 								.then(response => response.json())
 								.then(data => {
 									if (data.code === 0) {
-										swal('成功'+rId);
+										swal('成功'+rId).then((ret)=>{window.location.href = '../page8/page8.html';});
                                                                                  Cookies.set('recordId', rId);
                                                                                  Cookies.set('fileHash', fileHash);
                                                                                  Cookies.set('selfSign',mark.value);
                                                                                  Cookies.set('txId', dataToSend.txId);
                                                                                  //Cookies.set('timestamp', dataToSend.timestamp);
-                                                                                 window.location.href = '../page8/page8.html';
+                                                                                 
 									} else {
 										swal(data.msg);
 										console.log(data.msg);
